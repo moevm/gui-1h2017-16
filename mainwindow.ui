@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>748</width>
-    <height>389</height>
+    <width>789</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,13 +24,13 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_1">
      <attribute name="title">
       <string>Tab 1</string>
      </attribute>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -208,13 +208,13 @@
            </sizepolicy>
           </property>
          </widget>
-         <widget class="QWidget" name="">
+         <widget class="QWidget" name="layoutWidget">
           <property name="geometry">
            <rect>
             <x>10</x>
             <y>140</y>
             <width>121</width>
-            <height>49</height>
+            <height>58</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
@@ -298,7 +298,7 @@
           <number>4</number>
          </property>
          <attribute name="horizontalHeaderVisible">
-          <bool>true</bool>
+          <bool>false</bool>
          </attribute>
          <attribute name="horizontalHeaderDefaultSectionSize">
           <number>100</number>
@@ -371,9 +371,6 @@
              <string>расходы</string>
             </property>
            </widget>
-           <zorder>incomesCheckBox</zorder>
-           <zorder>expensesCheckBox</zorder>
-           <zorder>chooseDateGroup</zorder>
           </widget>
          </item>
          <item>
@@ -527,20 +524,144 @@
        </item>
       </layout>
      </widget>
-     <zorder>tableWidget</zorder>
-     <zorder>chooseDateGroup</zorder>
-     <zorder>layoutWidget</zorder>
-     <zorder>showCheckBoxGroup</zorder>
-     <zorder>layoutWidget</zorder>
-     <zorder>showCheckBoxGroup</zorder>
-     <zorder>tableWidget</zorder>
-     <zorder>chooseDateGroup</zorder>
-     <zorder>intervalRadioButtonGroup</zorder>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
       <string>Tab 2</string>
      </attribute>
+     <widget class="QWidget" name="horizontalLayoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>731</width>
+        <height>351</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="tab2_content_layout_4" stretch="0,0">
+       <item>
+        <layout class="QVBoxLayout" name="tab2leftVerticalLayout_4">
+         <item>
+          <widget class="QGroupBox" name="tab2ChartTypeGroupBox_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Тип диаграммы</string>
+           </property>
+           <widget class="QRadioButton" name="tab2BarChart_4">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>30</y>
+              <width>111</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Гистограмма</string>
+            </property>
+           </widget>
+           <widget class="QRadioButton" name="tab2Chart_4">
+            <property name="geometry">
+             <rect>
+              <x>130</x>
+              <y>30</y>
+              <width>81</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>График</string>
+            </property>
+           </widget>
+           <widget class="QRadioButton" name="tab2PieChart_4">
+            <property name="geometry">
+             <rect>
+              <x>240</x>
+              <y>30</y>
+              <width>97</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Круговая</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QGroupBox" name="tab2DataGroupBox_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="title">
+            <string>Показываемые данные</string>
+           </property>
+           <widget class="QCheckBox" name="tab2IncomesRadioButton_4">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>30</y>
+              <width>83</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Доходы</string>
+            </property>
+           </widget>
+           <widget class="QCheckBox" name="tab2ExpensesRadioButton_4">
+            <property name="geometry">
+             <rect>
+              <x>130</x>
+              <y>30</y>
+              <width>83</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Расходы</string>
+            </property>
+           </widget>
+           <widget class="QCheckBox" name="tab2BalanceRadioButton_4">
+            <property name="geometry">
+             <rect>
+              <x>240</x>
+              <y>30</y>
+              <width>83</width>
+              <height>22</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Баланс</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCalendarWidget" name="tab2CalendarWidget_4"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QWidget" name="tab2ChartVisualisation_4" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
   </widget>
