@@ -24,9 +24,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    adddataform.cpp
 
 HEADERS  += mainwindow.h \
     adddataform.h
 
-FORMS    += mainwindow.ui adddataform.ui
+FORMS    += mainwindow.ui \
+    adddataform.ui
+    addfinanceform.ui

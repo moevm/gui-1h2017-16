@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>AddDataForm</class>
+ <widget class="QWidget" name="AddDataForm">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>171</width>
-    <height>355</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,8 +16,8 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>0</y>
+     <x>80</x>
+     <y>10</y>
      <width>150</width>
      <height>349</height>
     </rect>
