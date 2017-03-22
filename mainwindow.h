@@ -17,6 +17,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+
+private slots:
+    openAddDataForm();
+
 };
 
 #endif // MAINWINDOW_H
