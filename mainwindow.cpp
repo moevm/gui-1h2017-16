@@ -21,11 +21,11 @@ MainWindow::openAddDataForm()
 //    AddDataForm *form = new AddDataForm;
 //    form->show();
 //    addForm->show();
-    Finance fin = Finance("hellosd", QDate::currentDate(),"cassdat",12333);
-    dbservice->saveData(&fin);
+//    Finance fin = Finance("hellosd", QDate::currentDate(),"cassdat",12333);
+//    dbservice->saveData(&fin);
 
-    QVector<Finance> vector = dbservice->getFinanceDataByDay(QDate::currentDate());
-    for(int i =0; i<vector.length();i++){
-        qDebug()<<vector.at(i).toString();
-    }
+//    QVector<Finance> vector = dbservice->getFinanceDataByMonth(QDate::currentDate());
+//    for(int i =0; i<vector.length();i++){
+//        qDebug()<<vector.at(i).toString();
+//    }
 }

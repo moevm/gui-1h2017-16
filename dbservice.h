@@ -18,6 +18,9 @@ public:
     void saveData(Finance* fin);
     void changeData();
     void deleteData();
+
+    QVector<Finance> queryToFinanceVector(QSqlQuery *query);
+
     QVector<Finance> getFinanceDataByDay(QDate date);
     QVector<Finance> getFinanceDataByMonth(QDate date);
     QVector<Finance> getFinanceDataByYear(QDate date);

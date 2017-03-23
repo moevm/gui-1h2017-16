@@ -15,7 +15,7 @@ void DBService::saveData(Finance *fin)
             .arg(fin->getCategory())
             .arg(fin->getSum());
 
-    qDebug()<<queryString;
+//    qDebug()<<queryString;
 
     QSqlQuery query;
 
@@ -23,9 +23,23 @@ void DBService::saveData(Finance *fin)
         qDebug() << "ERROR: " << query.lastError().text();
 }
 
+QVector<Finance> DBService::queryToFinanceVector(QSqlQuery *query)
+{
+    QSqlRecord rec = query->record();
+    QVector<Finance> vector;
+    while(query->next()){
+        Finance fin = Finance();
+        fin.setType(query->value(rec.indexOf("f_type")).toString());
+        fin.setDate(QDate::fromString(query->value(rec.indexOf("f_date")).toString(),"yyyy-MM-dd"));
+        fin.setCategory(query->value(rec.indexOf("f_category")).toString());
+        fin.setSum(query->value(rec.indexOf("f_sum")).toInt());
+        vector.append(fin);
+    }
+    return vector;
+}
+
 QVector<Finance> DBService::getFinanceDataByDay(QDate date)
 {
-
     QSqlQuery query;
     query.prepare("SELECT * FROM f_data WHERE f_date = ?");
     query.addBindValue(date.toString("yyyy-MM-dd"));
@@ -33,17 +47,47 @@ QVector<Finance> DBService::getFinanceDataByDay(QDate date)
     if(!query.exec())
             qDebug() << "ERROR: " << query.lastError().text();
 
-    QSqlRecord rec = query.record();
-    QVector<Finance> vector;
-    while(query.next()){
-        Finance fin = Finance();
-        fin.setType(query.value(rec.indexOf("f_type")).toString());
-        fin.setDate(QDate::fromString(query.value(rec.indexOf("f_date")).toString(),"yyyy-MM-dd"));
-        fin.setCategory(query.value(rec.indexOf("f_category")).toString());
-        fin.setSum(query.value(rec.indexOf("f_sum")).toInt());
-        vector.append(fin);
-    }
-    return vector;
+
+    return queryToFinanceVector(&query);
+}
+
+QVector<Finance> DBService::getFinanceDataByMonth(QDate date)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM f_data WHERE f_date BETWEEN ? AND ?");
+    qDebug()<< date.toString("yyyy-MM")  + "-01";
+    qDebug()<< date.toString("yyyy-MM")  + "-31";
+    query.addBindValue(date.toString("yyyy-MM")  + "-01");
+    query.addBindValue(date.toString("yyyy-MM") + "-31");
+
+    if(!query.exec())
+            qDebug() << "ERROR: " << query.lastError().text();
+
+    return queryToFinanceVector(&query);
+}
+
+QVector<Finance> DBService::getFinanceDataByYear(QDate date)
+{
+    QSqlQuery query;
+    query.prepare("SELECT * FROM f_data WHERE f_date BETWEEN ? AND ?");
+    qDebug()<< date.toString("yyyy")  + "-01-01";
+    qDebug()<< date.toString("yyyy")  + "-12-31";
+    query.addBindValue(date.toString("yyyy")  + "-01-01");
+    query.addBindValue(date.toString("yyyy") + "-12-31");
+
+    if(!query.exec())
+            qDebug() << "ERROR: " << query.lastError().text();
+
+    return queryToFinanceVector(&query);
+}
+
+QVector<Finance> DBService::getAllFinanceData()
+{
+    QSqlQuery query;
+    if(!query.exec("SELECT * FROM f_data"))
+        qDebug() << "ERROR: " << query.lastError().text();
+
+    return queryToFinanceVector(&query);
 }
 
 void DBService::initDB()
