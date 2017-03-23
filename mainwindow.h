@@ -2,7 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDebug>
 #include "adddataform.h"
+#include "dbservice.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,6 +21,7 @@ public:
 private:
     Ui::MainWindow *ui;
     AddDataForm *addForm;
+    DBService *dbservice;
 
 
 private slots:
