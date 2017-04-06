@@ -25,7 +25,7 @@ private:
 
 
 private slots:
-    openAddDataForm();
+    void openAddDataForm();
 
 };
 

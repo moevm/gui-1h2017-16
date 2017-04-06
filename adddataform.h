@@ -15,6 +15,9 @@ public:
     explicit AddDataForm(QWidget *parent = 0);
     ~AddDataForm();
 
+private slots:
+    void on_pushButton_2_clicked();
+
 private:
     Ui::AddDataForm *ui;
 };

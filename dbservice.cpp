@@ -22,7 +22,6 @@ void DBService::saveData(Finance *fin)
     if(!query.exec(queryString))
         qDebug() << "ERROR: " << query.lastError().text();
 }
-
 QVector<Finance> DBService::queryToFinanceVector(QSqlQuery *query)
 {
     QSqlRecord rec = query->record();
@@ -93,7 +92,8 @@ QVector<Finance> DBService::getAllFinanceData()
 void DBService::initDB()
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
-    sdb.setDatabaseName("D:\IEdb.db3");
+//    sdb.setDatabaseName("D:\IEdb.db3");
+    sdb.setDatabaseName("C:\IEdb.db3");
     if(!sdb.open()){
         qDebug()<<"doesn't work";
     }else{

@@ -12,3 +12,8 @@ AddDataForm::~AddDataForm()
 {
     delete ui;
 }
+
+void AddDataForm::on_pushButton_2_clicked()
+{
+
+}
