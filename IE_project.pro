@@ -36,4 +36,3 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     adddataform.ui
-    addfinanceform.ui

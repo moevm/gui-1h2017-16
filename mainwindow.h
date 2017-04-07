@@ -3,8 +3,12 @@
 
 #include <QMainWindow>
 #include <QDebug>
+#include <QSqlDatabase>
+#include <QSqlTableModel>
+#include <QTableView>
 #include "adddataform.h"
 #include "dbservice.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -21,12 +25,15 @@ public:
 private:
     Ui::MainWindow *ui;
     AddDataForm *addForm;
-    DBService *dbservice;
+    QSqlTableModel *model;
+
+    void initModel();
+    void editTableView();
 
 
 private slots:
     void openAddDataForm();
-
+    void toggleContent();
 };
 
 #endif // MAINWINDOW_H

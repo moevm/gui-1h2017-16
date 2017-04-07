@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QSqlTableModel>
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QSqlRecord>
@@ -18,6 +19,7 @@ public:
     void saveData(Finance* fin);
     void changeData();
     void deleteData();
+    QSqlTableModel* getModel();
 
     QVector<Finance> queryToFinanceVector(QSqlQuery *query);
 
@@ -27,7 +29,8 @@ public:
     QVector<Finance> getAllFinanceData();
 private:
     void initDB();
-    QSqlDatabase sdb;
+//    QSqlDatabase sdb;
+    QSqlTableModel* model;
 };
 
 #endif // DBSERVICE_H

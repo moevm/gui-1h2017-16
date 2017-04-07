@@ -22,6 +22,11 @@ void DBService::saveData(Finance *fin)
     if(!query.exec(queryString))
         qDebug() << "ERROR: " << query.lastError().text();
 }
+
+QSqlTableModel *DBService::getModel()
+{
+    return model;
+}
 QVector<Finance> DBService::queryToFinanceVector(QSqlQuery *query)
 {
     QSqlRecord rec = query->record();
@@ -91,27 +96,32 @@ QVector<Finance> DBService::getAllFinanceData()
 
 void DBService::initDB()
 {
-    sdb = QSqlDatabase::addDatabase("QSQLITE");
+    QSqlDatabase sdb = QSqlDatabase::addDatabase("QSQLITE");
 //    sdb.setDatabaseName("D:\IEdb.db3");
-    sdb.setDatabaseName("C:\IEdb.db3");
+    sdb.setDatabaseName("D:\IEdb.db3");
     if(!sdb.open()){
         qDebug()<<"doesn't work";
     }else{
         qDebug()<< "db has opened";
     }
 
-    QSqlQuery query;
+    QSqlTableModel *model = new QSqlTableModel(0,sdb);
+    model->setTable("f_data");
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
 
-    if(!query.exec("CREATE TABLE IF NOT EXISTS `f_data` ("
-                   "`f_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                   "`f_type`	TEXT NOT NULL, `f_date`	DATE NOT NULL,"
-                   "`f_category`	TEXT NOT NULL, `f_sum`	INTEGER NOT NULL);"))
-        qDebug() << "ERROR: " << query.lastError().text();
+//    QSqlQuery query;
 
-   if(!query.exec("CREATE TABLE IF NOT EXISTS `categories` ("
-                    "`cat_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-                    "`cat_name`	TEXT NOT NULL);"))
-       qDebug() << "ERROR: " << query.lastError().text();
+//    if(!query.exec("CREATE TABLE IF NOT EXISTS `f_data` ("
+//                   "`f_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+//                   "`f_type`	TEXT NOT NULL, `f_date`	DATE NOT NULL,"
+//                   "`f_category`	TEXT NOT NULL, `f_sum`	INTEGER NOT NULL);"))
+//        qDebug() << "ERROR: " << query.lastError().text();
+
+//   if(!query.exec("CREATE TABLE IF NOT EXISTS `categories` ("
+//                    "`cat_id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+//                    "`cat_name`	TEXT NOT NULL);"))
+//       qDebug() << "ERROR: " << query.lastError().text();
 
     //    qDebug()<<QString( QCoreApplication::applicationDirPath() + "/logo.jpg" );
 }
