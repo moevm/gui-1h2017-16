@@ -16,6 +16,7 @@ Form::~Form()
     delete ui;
 }
 
+
 void Form::checkInputData()
 {
     if(ui->sumEditField->text()==""){
@@ -31,6 +32,11 @@ void Form::checkInputData()
 
     emit dataChecked(finance);
     close();
+}
+
+void Form::setModel(QSqlQueryModel *value)
+{
+    ui->categoryComboBox->setModel(value);
 }
 
 void Form::setDate(const QDate &value)

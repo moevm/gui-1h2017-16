@@ -8,6 +8,7 @@
 #include <QTableView>
 #include "form.h"
 #include "dbservice.h"
+#include "categorysettings.h"
 
 
 namespace Ui {
@@ -25,18 +26,18 @@ public:
 private:
     Ui::MainWindow *ui;
     Form *form;
-    QSqlTableModel *model;
+    CategorySettings *settingsWindow;
+    QSqlTableModel *main_model;
+    QSqlQueryModel *form_model;
 
     QDate currentDate;
+    QStringList currentCategories;
 
     enum interval {DAY, MONTH, YEAR};
     enum type {NONE, INCOMES, EXPENSES, BOTH};
 
     interval filterInterval;
     type filterType;
-
-//    QString filterIntervalString;
-//    QString filterIntervalString;
 
     void initParameters();
     void initModel();

@@ -1,9 +1,6 @@
 #include "mainwindow.h"
 #include "dbservice.h"
 #include <QApplication>
-#include <QSqlDatabase>
-#include <QSqlTableModel>
-#include <QTableView>
 
 int main(int argc, char *argv[])
 {

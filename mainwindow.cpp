@@ -56,18 +56,26 @@ void MainWindow::initModel()
         qDebug()<< "db has opened";
     }
 
-    model = new QSqlTableModel(0,sdb);
-    model->setTable("f_data");
-    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    main_model = new QSqlTableModel(0,sdb);
+    main_model->setTable("f_data");
+    main_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
-    model->setHeaderData(0, Qt::Horizontal, "id");
-    model->setHeaderData(1, Qt::Horizontal, "Type");
-    model->setHeaderData(2, Qt::Horizontal, "Date");
-    model->setHeaderData(3, Qt::Horizontal, "Category");
-    model->setHeaderData(4, Qt::Horizontal, "Sum");
+    main_model->setHeaderData(0, Qt::Horizontal, "id");
+    main_model->setHeaderData(1, Qt::Horizontal, "Type");
+    main_model->setHeaderData(2, Qt::Horizontal, "Date");
+    main_model->setHeaderData(3, Qt::Horizontal, "Category");
+    main_model->setHeaderData(4, Qt::Horizontal, "Sum");
 
     updateModelFilter();
-    model->select();
+    main_model->select();
+
+    form_model = new QSqlQueryModel(/*0,sdb*/);
+//    form_model->setTable("f_categories");
+//    form_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    QSqlQuery query("select name from f_categories", sdb);
+    form_model->setQuery(query);
+    form->setModel(form_model);
+
 
 //    QSqlQuery query;
 
@@ -87,7 +95,7 @@ void MainWindow::initModel()
 
 void MainWindow::editTableView()
 {
-     ui->tableView->setModel(model);
+     ui->tableView->setModel(main_model);
      ui->tableView->verticalHeader()->hide();
      ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
      ui->tableView->hideColumn(0); // don't show the ID
@@ -126,7 +134,7 @@ void MainWindow::updateModelFilter()
 
     qDebug() << filterString;
 
-    model->setFilter(filterString);
+    main_model->setFilter(filterString);
 
 }
 
@@ -249,19 +257,18 @@ void MainWindow::saveNewData(Finance finance)
 
     QString queryString = QString("INSERT INTO f_data(f_type, f_date, f_category, f_sum) VALUES('%1', '%2', '%3', %4 )")
             .arg(finance.getType())
-//            .arg("date('now')")
             .arg(finance.getDate().toString("yyyy-MM-dd"))
             .arg(finance.getCategory())
             .arg(finance.getSum());
 
-qDebug()<<queryString;
+    qDebug()<<queryString;
 
     QSqlQuery query;
 
     if(!query.exec(queryString))
         qDebug() << "ERROR: " << query.lastError().text();
 
-model->select();
+    main_model->select();
 //    model->insertRows(model->rowCount(),3);
 //    QSqlRecord record;
 //    record.setValue("f_type", QString(finance.getType()));

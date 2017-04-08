@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QCloseEvent>
 #include <QDebug>
+#include <QSqlTableModel>
 #include "finance.h"
 
 namespace Ui {
@@ -20,6 +21,7 @@ public:
 
 
     void setDate(const QDate &value);
+    void setModel(QSqlQueryModel *value);
 
 signals:
     void closed();

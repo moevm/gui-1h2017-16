@@ -27,12 +27,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     dbservice.cpp \
     finance.cpp \
-    form.cpp
+    form.cpp \
+    categorysettings.cpp
 
 HEADERS  += mainwindow.h \
     dbservice.h \
     finance.h \
-    form.h
+    form.h \
+    categorysettings.h
 
 FORMS    += mainwindow.ui \
     form.ui
