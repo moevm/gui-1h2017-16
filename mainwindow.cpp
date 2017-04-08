@@ -8,18 +8,33 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     addForm = new AddDataForm;
 
-
+    initParameters();
     initModel();
     editTableView();
 
 
     QObject::connect(ui->addDataButton,SIGNAL(clicked(bool)),this,SLOT(openAddDataForm()));
     QObject::connect(ui->toggleContentStackButton,SIGNAL(clicked(bool)),this,SLOT(toggleContent()));
+
+    QObject::connect(ui->dateEditField,SIGNAL(dateChanged(QDate)),this,SLOT(changeCurrentDate(QDate)));
+    QObject::connect(ui->dayRadioButton,SIGNAL(clicked(bool)),this,SLOT(setDayInterval()));
+    QObject::connect(ui->monthRadioButton,SIGNAL(clicked(bool)),this,SLOT(setMonthInterval()));
+    QObject::connect(ui->yearRadioButton,SIGNAL(clicked(bool)),this,SLOT(setYearInterval()));
+
+    QObject::connect(ui->nextDateButton,SIGNAL(clicked(bool)),this,SLOT(incrementCurrentDate()));
+    QObject::connect(ui->previousDateButton,SIGNAL(clicked(bool)),this,SLOT(decrementCurrentDate()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::initParameters()
+{
+    currentDate = QDate::currentDate();
+    ui->dateEditField->setDate(currentDate);
+    filterInterval = DAY;
 }
 
 void MainWindow::initModel()
@@ -43,6 +58,7 @@ void MainWindow::initModel()
     model->setHeaderData(3, Qt::Horizontal, "Category");
     model->setHeaderData(4, Qt::Horizontal, "Sum");
 
+    updateModelFilter();
     model->select();
 
 //    QSqlQuery query;
@@ -67,6 +83,29 @@ void MainWindow::editTableView()
      ui->tableView->verticalHeader()->hide();
      ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
      ui->tableView->hideColumn(0); // don't show the ID
+}
+
+void MainWindow::updateModelFilter()
+{
+    QString filterString;
+    switch(filterInterval){
+    case DAY:
+        filterString = QString("f_date = '%1'").arg(currentDate.toString("yyyy-MM-dd"));
+        break;
+    case MONTH:
+        filterString = QString("f_date BETWEEN '%1-01' AND '%1-31'").arg(currentDate.toString("yyyy-MM"));
+        break;
+    case YEAR:
+        filterString = QString("f_date BETWEEN '%1-01-01' AND '%1-12-31'").arg(currentDate.toString("yyyy"));
+        break;
+    default:
+        qDebug() << "error in choose interval section";
+    }
+
+    qDebug() << filterString;
+
+    model->setFilter(filterString);
+
 }
 
 void MainWindow::openAddDataForm()
@@ -97,4 +136,68 @@ void MainWindow::toggleContent(){
 
     ui->contentStack->setCurrentIndex((curContentIndex + 1)%2);
     ui->controlPanelStack->setCurrentIndex((curPanelIndex + 1)%2);
+}
+
+void MainWindow::setDayInterval()
+{
+    filterInterval = DAY;
+    updateModelFilter();
+}
+
+void MainWindow::setMonthInterval()
+{
+    filterInterval = MONTH;
+    updateModelFilter();
+}
+
+void MainWindow::setYearInterval()
+{
+    filterInterval = YEAR;
+    updateModelFilter();
+}
+
+void MainWindow::incrementCurrentDate()
+{
+    switch(filterInterval){
+    case DAY:
+        currentDate = currentDate.addDays(1);
+        break;
+    case MONTH:
+        currentDate = currentDate.addMonths(1);
+        break;
+    case YEAR:
+        currentDate = currentDate.addYears(1);
+        break;
+    default:
+        qDebug() << "error in setting next date section";
+    }
+
+    ui->dateEditField->setDate(currentDate);
+    updateModelFilter();
+}
+
+void MainWindow::decrementCurrentDate()
+{
+    switch(filterInterval){
+    case DAY:
+        currentDate = currentDate.addDays(-1);
+        break;
+    case MONTH:
+        currentDate = currentDate.addMonths(-1);
+        break;
+    case YEAR:
+        currentDate = currentDate.addYears(-1);
+        break;
+    default:
+        qDebug() << "error in setting prev date section";
+    }
+
+    ui->dateEditField->setDate(currentDate);
+    updateModelFilter();
+}
+
+void MainWindow::changeCurrentDate(QDate date)
+{
+    currentDate = date;
+    updateModelFilter();
 }

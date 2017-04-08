@@ -43,7 +43,7 @@
          <property name="title">
           <string>Дата</string>
          </property>
-         <widget class="QDateEdit" name="showDateEditField">
+         <widget class="QDateEdit" name="dateEditField">
           <property name="geometry">
            <rect>
             <x>10</x>
@@ -130,6 +130,9 @@
           </property>
           <property name="text">
            <string>День</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
          </widget>
          <widget class="QRadioButton" name="monthRadioButton">
@@ -289,6 +292,9 @@
             <property name="text">
              <string>доходы</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
            <widget class="QCheckBox" name="expensesCheckBox">
             <property name="geometry">
@@ -301,6 +307,9 @@
             </property>
             <property name="text">
              <string>расходы</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
             </property>
            </widget>
           </widget>

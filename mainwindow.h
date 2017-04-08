@@ -27,13 +27,29 @@ private:
     AddDataForm *addForm;
     QSqlTableModel *model;
 
+    QDate currentDate;
+
+    enum interval{DAY, MONTH, YEAR};
+
+    interval filterInterval;
+    QString filterTypeString;
+
+    void initParameters();
     void initModel();
     void editTableView();
+    void updateModelFilter();
 
 
 private slots:
     void openAddDataForm();
     void toggleContent();
+    void setDayInterval();
+    void setMonthInterval();
+    void setYearInterval();
+    void incrementCurrentDate();
+    void decrementCurrentDate();
+
+    void changeCurrentDate(QDate);
 };
 
 #endif // MAINWINDOW_H
