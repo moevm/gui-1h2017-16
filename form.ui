@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddDataForm</class>
- <widget class="QWidget" name="AddDataForm">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>170</width>
+    <height>325</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>10</x>
      <y>10</y>
      <width>150</width>
-     <height>349</height>
+     <height>301</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -68,7 +68,7 @@
      <string>Дата</string>
     </property>
    </widget>
-   <widget class="QDateEdit" name="addDateEditField">
+   <widget class="QDateEdit" name="dateEditField">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -129,6 +129,9 @@
     </property>
     <property name="text">
      <string>доходы</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QRadioButton" name="expensesRadioButton">
@@ -252,30 +255,17 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="addButton">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>300</y>
+      <y>270</y>
       <width>121</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Добавить</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>260</y>
-      <width>80</width>
-      <height>25</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Submit</string>
     </property>
    </widget>
   </widget>

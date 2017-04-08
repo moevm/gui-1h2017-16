@@ -25,14 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    adddataform.cpp \
     dbservice.cpp \
-    finance.cpp
+    finance.cpp \
+    form.cpp
 
 HEADERS  += mainwindow.h \
-    adddataform.h \
     dbservice.h \
-    finance.h
+    finance.h \
+    form.h
 
 FORMS    += mainwindow.ui \
-    adddataform.ui
+    form.ui

@@ -19,18 +19,12 @@ public:
     void saveData(Finance* fin);
     void changeData();
     void deleteData();
-    QSqlTableModel* getModel();
 
     QVector<Finance> queryToFinanceVector(QSqlQuery *query);
 
-    QVector<Finance> getFinanceDataByDay(QDate date);
-    QVector<Finance> getFinanceDataByMonth(QDate date);
-    QVector<Finance> getFinanceDataByYear(QDate date);
-    QVector<Finance> getAllFinanceData();
 private:
     void initDB();
-//    QSqlDatabase sdb;
-    QSqlTableModel* model;
+
 };
 
 #endif // DBSERVICE_H

@@ -6,7 +6,7 @@
 #include <QSqlDatabase>
 #include <QSqlTableModel>
 #include <QTableView>
-#include "adddataform.h"
+#include "form.h"
 #include "dbservice.h"
 
 
@@ -24,15 +24,19 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    AddDataForm *addForm;
+    Form *form;
     QSqlTableModel *model;
 
     QDate currentDate;
 
-    enum interval{DAY, MONTH, YEAR};
+    enum interval {DAY, MONTH, YEAR};
+    enum type {NONE, INCOMES, EXPENSES, BOTH};
 
     interval filterInterval;
-    QString filterTypeString;
+    type filterType;
+
+//    QString filterIntervalString;
+//    QString filterIntervalString;
 
     void initParameters();
     void initModel();
@@ -41,15 +45,18 @@ private:
 
 
 private slots:
-    void openAddDataForm();
+    void openForm();
     void toggleContent();
     void setDayInterval();
     void setMonthInterval();
     void setYearInterval();
     void incrementCurrentDate();
     void decrementCurrentDate();
+    void checkShowingTypes();
 
     void changeCurrentDate(QDate);
+    void formClosed();
+    void saveNewData(Finance);
 };
 
 #endif // MAINWINDOW_H

@@ -6,14 +6,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    addForm = new AddDataForm;
+    form = new Form;
 
     initParameters();
     initModel();
     editTableView();
 
 
-    QObject::connect(ui->addDataButton,SIGNAL(clicked(bool)),this,SLOT(openAddDataForm()));
+    QObject::connect(ui->addDataButton,SIGNAL(clicked(bool)),this,SLOT(openForm()));
     QObject::connect(ui->toggleContentStackButton,SIGNAL(clicked(bool)),this,SLOT(toggleContent()));
 
     QObject::connect(ui->dateEditField,SIGNAL(dateChanged(QDate)),this,SLOT(changeCurrentDate(QDate)));
@@ -23,10 +23,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->nextDateButton,SIGNAL(clicked(bool)),this,SLOT(incrementCurrentDate()));
     QObject::connect(ui->previousDateButton,SIGNAL(clicked(bool)),this,SLOT(decrementCurrentDate()));
+
+    QObject::connect(form,SIGNAL(closed()),this,SLOT(formClosed()));
+    QObject::connect(form,SIGNAL(dataChecked(Finance)),this,SLOT(saveNewData(Finance)));
+
+    QObject::connect(ui->incomesCheckBox,SIGNAL(clicked(bool)),this,SLOT(checkShowingTypes()));
+    QObject::connect(ui->expensesCheckBox,SIGNAL(clicked(bool)),this,SLOT(checkShowingTypes()));
 }
 
 MainWindow::~MainWindow()
 {
+    delete form;
     delete ui;
 }
 
@@ -35,6 +42,7 @@ void MainWindow::initParameters()
     currentDate = QDate::currentDate();
     ui->dateEditField->setDate(currentDate);
     filterInterval = DAY;
+    filterType = BOTH;
 }
 
 void MainWindow::initModel()
@@ -102,16 +110,32 @@ void MainWindow::updateModelFilter()
         qDebug() << "error in choose interval section";
     }
 
+    switch(filterType){
+    case NONE:
+        filterString.append("AND f_type = 'none'");
+        break;
+    case INCOMES:
+        filterString.append("AND f_type = 'income'");
+        break;
+    case EXPENSES:
+        filterString.append("AND f_type = 'expense'");
+        break;
+    case BOTH:
+        break;
+    }
+
     qDebug() << filterString;
 
     model->setFilter(filterString);
 
 }
 
-void MainWindow::openAddDataForm()
+void MainWindow::openForm()
 {
-    AddDataForm *form = new AddDataForm;
+    ui->addDataButton->setEnabled(false);
+    form->setDate(currentDate);
     form->show();
+
 //    addForm->show();
 //    Finance fin = Finance("hellosd", QDate::currentDate(),"cassdat",12333);
 //    dbservice->saveData(&fin);
@@ -196,8 +220,59 @@ void MainWindow::decrementCurrentDate()
     updateModelFilter();
 }
 
+void MainWindow::checkShowingTypes()
+{
+    bool income = ui->incomesCheckBox->isChecked();
+    bool expense = ui->expensesCheckBox->isChecked();
+    if (income && expense) filterType = BOTH;
+    if (income && !expense) filterType = INCOMES;
+    if (!income && expense) filterType = EXPENSES;
+    if (!income && !expense) filterType = NONE;
+
+    updateModelFilter();
+}
+
 void MainWindow::changeCurrentDate(QDate date)
 {
     currentDate = date;
     updateModelFilter();
+}
+
+void MainWindow::formClosed()
+{
+    ui->addDataButton->setEnabled(true);
+}
+
+void MainWindow::saveNewData(Finance finance)
+{
+    qDebug()<< finance.toString();
+
+    QString queryString = QString("INSERT INTO f_data(f_type, f_date, f_category, f_sum) VALUES('%1', '%2', '%3', %4 )")
+            .arg(finance.getType())
+//            .arg("date('now')")
+            .arg(finance.getDate().toString("yyyy-MM-dd"))
+            .arg(finance.getCategory())
+            .arg(finance.getSum());
+
+qDebug()<<queryString;
+
+    QSqlQuery query;
+
+    if(!query.exec(queryString))
+        qDebug() << "ERROR: " << query.lastError().text();
+
+model->select();
+//    model->insertRows(model->rowCount(),3);
+//    QSqlRecord record;
+//    record.setValue("f_type", QString(finance.getType()));
+//    record.setValue("f_date", QString(finance.getDate().toString("'dd-MM-yyyy'")));
+//    record.setValue("f_category", QString(finance.getCategory()));
+//    record.setValue("f_sum", QString(finance.getSum()));
+//    record.setValue("f_id", QString(finance.getType()));
+//    if(model->insertRecord(-1,record))
+//        qDebug()<<"inserted";
+//    else qDebug() << "didn't insert";
+//    model->submitAll();
+
+//    model->setQuery();
 }
