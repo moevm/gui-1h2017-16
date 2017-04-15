@@ -57,6 +57,8 @@ private slots:
     void openForm();
     void openCategoryForm();
     void formClosed();
+    void setIncomesComboBoxModel();
+    void setExpensesComboBoxModel();
 
     //main window UI
     void toggleContent();

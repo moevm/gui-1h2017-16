@@ -28,6 +28,8 @@ signals:
     void closed();
     void dataChecked(Finance);
     void categoryToolButtonPressed();
+    void incomesRadioButtonSignal();
+    void expensesRadioButtonSignal();
 
 private slots:
     void checkInputData();

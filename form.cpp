@@ -11,6 +11,8 @@ Form::Form(QWidget *parent) :
 
      QObject::connect(ui->addButton,SIGNAL(clicked(bool)),this,SLOT(checkInputData()));
      QObject::connect(ui->categoryToolButton,SIGNAL(clicked(bool)),this,SLOT(disableCategoryToolButton()));
+     QObject::connect(ui->incomesRadioButton,SIGNAL(clicked(bool)),this,SIGNAL(incomesRadioButtonSignal()));
+     QObject::connect(ui->expensesRadioButton,SIGNAL(clicked(bool)),this,SIGNAL(expensesRadioButtonSignal()));
 }
 
 Form::~Form()

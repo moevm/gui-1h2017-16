@@ -103,6 +103,8 @@ void MainWindow::makeConnects(){
     QObject::connect(form,SIGNAL(closed()),this,SLOT(formClosed()));
     QObject::connect(form,SIGNAL(dataChecked(Finance)),this,SLOT(saveNewData(Finance)));
     QObject::connect(form,SIGNAL(categoryToolButtonPressed()),this,SLOT(openCategoryForm()));
+    QObject::connect(form,SIGNAL(incomesRadioButtonSignal()),this,SLOT(setIncomesComboBoxModel()));
+    QObject::connect(form,SIGNAL(expensesRadioButtonSignal()),this,SLOT(setExpensesComboBoxModel()));
 
     //from category form
     QObject::connect(categoryForm,SIGNAL(addIncomeCategorySignal(QString)),this,SLOT(addIncomeCategory(QString)));
@@ -242,6 +244,16 @@ void MainWindow::decrementCurrentDate()
 void MainWindow::formClosed()
 {
     ui->addDataButton->setEnabled(true);
+}
+
+void MainWindow::setIncomesComboBoxModel()
+{
+    form->setModel(income_category_model);
+}
+
+void MainWindow::setExpensesComboBoxModel()
+{
+    form->setModel(expense_category_model);
 }
 
 //crud
