@@ -330,6 +330,19 @@
         </widget>
        </item>
        <item>
+        <widget class="QPushButton" name="deleteButton">
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>удалить выделенное</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="toggleContentStackButton">
          <property name="maximumSize">
           <size>

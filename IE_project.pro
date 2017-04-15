@@ -37,4 +37,5 @@ HEADERS  += mainwindow.h \
     categorysettings.h
 
 FORMS    += mainwindow.ui \
-    form.ui
+    form.ui \
+    categorysettings.ui

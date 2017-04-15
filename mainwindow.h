@@ -54,6 +54,7 @@ private slots:
     void incrementCurrentDate();
     void decrementCurrentDate();
     void checkShowingTypes();
+    void deleteData();
 
     void changeCurrentDate(QDate);
     void formClosed();

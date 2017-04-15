@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QObject::connect(ui->incomesCheckBox,SIGNAL(clicked(bool)),this,SLOT(checkShowingTypes()));
     QObject::connect(ui->expensesCheckBox,SIGNAL(clicked(bool)),this,SLOT(checkShowingTypes()));
+
+    QObject::connect(ui->deleteButton,SIGNAL(clicked(bool)),this,SLOT(deleteData()));
 }
 
 MainWindow::~MainWindow()
@@ -66,6 +68,7 @@ void MainWindow::initModel()
     main_model->setHeaderData(3, Qt::Horizontal, "Category");
     main_model->setHeaderData(4, Qt::Horizontal, "Sum");
 
+
     updateModelFilter();
     main_model->select();
 
@@ -99,6 +102,7 @@ void MainWindow::editTableView()
      ui->tableView->verticalHeader()->hide();
      ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
      ui->tableView->hideColumn(0); // don't show the ID
+     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
 
 void MainWindow::updateModelFilter()
@@ -238,6 +242,18 @@ void MainWindow::checkShowingTypes()
     if (!income && !expense) filterType = NONE;
 
     updateModelFilter();
+}
+
+void MainWindow::deleteData()
+{
+
+    QModelIndexList indexes =  ui->tableView->selectionModel()->selectedRows();
+    int countRow = indexes.count();
+
+    for( int i = countRow; i > 0; i--)
+           main_model->removeRow( indexes.at(i-1).row(), QModelIndex());
+    main_model->submitAll();
+    main_model->select();
 }
 
 void MainWindow::changeCurrentDate(QDate date)
