@@ -21,8 +21,8 @@ public:
 signals:
     void addIncomeCategorySignal(QString);
     void addExpenseCategorySignal(QString);
-    void deleteIncomeCategorySignal();
-    void deleteExpenseCategorySignal();
+    void deleteIncomeCategorySignal(QModelIndexList);
+    void deleteExpenseCategorySignal(QModelIndexList);
 
 private:
     Ui::CategoryForm *ui;

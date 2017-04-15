@@ -116,6 +116,8 @@ void MainWindow::makeConnects(){
     //from category form
     QObject::connect(categoryForm,SIGNAL(addIncomeCategorySignal(QString)),this,SLOT(addIncomeCategory(QString)));
     QObject::connect(categoryForm,SIGNAL(addExpenseCategorySignal(QString)),this,SLOT(addExpenseCategory(QString)));
+    QObject::connect(categoryForm,SIGNAL(deleteIncomeCategorySignal(QModelIndexList)),this,SLOT(deleteIncomeCategory(QModelIndexList)));
+    QObject::connect(categoryForm,SIGNAL(deleteExpenseCategorySignal(QModelIndexList)),this,SLOT(deleteExpenseCategory(QModelIndexList)));
 }
 
 void MainWindow::updateModelFilter()
@@ -299,6 +301,25 @@ void MainWindow::addExpenseCategory(QString s)
     QSqlQuery query;
     if(!query.exec(insertQueryString))
         qDebug() << "ERROR: " << query.lastError().text();
+    expense_category_model->select();
+}
+
+void MainWindow::deleteIncomeCategory(QModelIndexList indexes)
+{
+    int countRow = indexes.count();
+    for( int i = countRow; i > 0; i--)
+           income_category_model->removeRow( indexes.at(i-1).row(), QModelIndex());
+    income_category_model->submitAll();
+    income_category_model->select();
+}
+
+void MainWindow::deleteExpenseCategory(QModelIndexList indexes)
+{
+    qDebug() << "yo yo yo";
+    int countRow = indexes.count();
+    for( int i = countRow; i > 0; i--)
+           expense_category_model->removeRow( indexes.at(i-1).row(), QModelIndex());
+    expense_category_model->submitAll();
     expense_category_model->select();
 }
 

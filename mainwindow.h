@@ -54,22 +54,31 @@ private:
 
 
 private slots:
+    //interaction with other forms
     void openForm();
     void openCategoryForm();
+    void formClosed();
+
+    //main window UI
     void toggleContent();
     void setDayInterval();
     void setMonthInterval();
     void setYearInterval();
     void incrementCurrentDate();
     void decrementCurrentDate();
+    void changeCurrentDate(QDate);
     void checkShowingTypes();
-    void deleteData();
 
+    //crud
+    void saveNewData(Finance);
+    void deleteData();
     void addIncomeCategory(QString);
     void addExpenseCategory(QString);
-    void changeCurrentDate(QDate);
-    void formClosed();
-    void saveNewData(Finance);
+    void deleteIncomeCategory(QModelIndexList);
+    void deleteExpenseCategory(QModelIndexList);
+
+
+
 };
 
 #endif // MAINWINDOW_H

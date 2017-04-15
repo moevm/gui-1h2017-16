@@ -18,18 +18,20 @@ CategoryForm::~CategoryForm()
 {
     delete ui;
 }
+
+//setters
 void CategoryForm::setIncomeCategoriesModel(QSqlTableModel *model)
 {
     ui->incomesListView->setModel(model);
     ui->incomesListView->setModelColumn(1);
 }
-
 void CategoryForm::setExpenseCategoriesModel(QSqlTableModel *model)
 {
     ui->expensesListView->setModel(model);
     ui->expensesListView->setModelColumn(1);
 }
 
+//buttons listeners
 void CategoryForm::checkIncomeLineEditSlot()
 {
     QString s = ui->incomeCategoryLineEdit->text();
@@ -38,7 +40,6 @@ void CategoryForm::checkIncomeLineEditSlot()
         emit addIncomeCategorySignal(s);
     }
 }
-
 void CategoryForm::checkExpenseLineEditSlot()
 {
     QString s = ui->expenseCategoryLineEdit->text();
@@ -47,13 +48,13 @@ void CategoryForm::checkExpenseLineEditSlot()
         emit addExpenseCategorySignal(s);
     }
 }
-
 void CategoryForm::deleteIncomeButtonSlot()
 {
-
+    QModelIndexList indexes =  ui->incomesListView->selectionModel()->selectedIndexes();
+    emit deleteIncomeCategorySignal(indexes);
 }
-
 void CategoryForm::deleteExpenseButtonSlot()
 {
-
+    QModelIndexList indexes =  ui->expensesListView->selectionModel()->selectedIndexes();
+    emit deleteExpenseCategorySignal(indexes);
 }
