@@ -270,32 +270,32 @@ void MainWindow::formClosed()
 void MainWindow::saveNewData(Finance finance)
 {
     qDebug()<< finance.toString();
-
-    QString queryString = QString("INSERT INTO f_data(f_type, f_date, f_category, f_sum) VALUES('%1', '%2', '%3', %4 )")
+    QString insertQueryString = QString("INSERT OR IGNORE INTO f_data(f_type, f_date, f_category, f_sum) VALUES('%1', '%2', '%3', %4 )")
             .arg(finance.getType())
             .arg(finance.getDate().toString("yyyy-MM-dd"))
             .arg(finance.getCategory())
             .arg(finance.getSum());
 
-    qDebug()<<queryString;
+    qDebug()<<insertQueryString;
+
+    QString updateQueryString = QString("UPDATE OR IGNORE f_data SET f_sum = f_sum + %1 where (f_type = '%2' AND f_date = '%3' AND f_category = '%4')")
+             .arg(finance.getSum())
+            .arg(finance.getType())
+            .arg(finance.getDate().toString("yyyy-MM-dd"))
+            .arg(finance.getCategory());
+
+    qDebug()<<updateQueryString;
 
     QSqlQuery query;
 
-    if(!query.exec(queryString))
+    if(!query.exec(updateQueryString))
         qDebug() << "ERROR: " << query.lastError().text();
 
-    main_model->select();
-//    model->insertRows(model->rowCount(),3);
-//    QSqlRecord record;
-//    record.setValue("f_type", QString(finance.getType()));
-//    record.setValue("f_date", QString(finance.getDate().toString("'dd-MM-yyyy'")));
-//    record.setValue("f_category", QString(finance.getCategory()));
-//    record.setValue("f_sum", QString(finance.getSum()));
-//    record.setValue("f_id", QString(finance.getType()));
-//    if(model->insertRecord(-1,record))
-//        qDebug()<<"inserted";
-//    else qDebug() << "didn't insert";
-//    model->submitAll();
+    if(!query.exec(insertQueryString))
+        qDebug() << "ERROR: " << query.lastError().text();
 
-//    model->setQuery();
+
+
+    main_model->select();
+
 }
