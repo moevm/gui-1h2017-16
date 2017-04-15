@@ -47,7 +47,6 @@ private:
     void initParameters();
     void initModels();
     void initMainModel(QSqlDatabase sdb);
-    void initFormModel(QSqlDatabase sdb);
     void editTableView();
     void updateModelFilter();
     void makeConnects();

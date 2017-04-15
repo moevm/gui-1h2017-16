@@ -42,17 +42,16 @@ void Form::disableCategoryToolButton()
     emit categoryToolButtonPressed();
 }
 
-void Form::setModel(QSqlQueryModel *value)
+void Form::setModel(QSqlTableModel *value)
 {
     ui->categoryComboBox->setModel(value);
+    ui->categoryComboBox->setModelColumn(1);
 }
 
 void Form::setDate(const QDate &value)
 {
     ui->dateEditField->setDate(value);
 }
-
-
 
 void Form::closeEvent(QCloseEvent *event)
 {

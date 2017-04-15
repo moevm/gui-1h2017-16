@@ -148,5 +148,22 @@
   </widget>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>closeButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>CategoryForm</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>294</x>
+     <y>336</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>212</x>
+     <y>322</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

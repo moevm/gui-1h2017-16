@@ -21,7 +21,8 @@ public:
 
 
     void setDate(const QDate &value);
-    void setModel(QSqlQueryModel *value);
+    void setModel(QSqlTableModel *value);
+
 
 signals:
     void closed();

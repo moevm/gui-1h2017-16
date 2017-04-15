@@ -39,7 +39,6 @@ void MainWindow::initModels()
     else qDebug()<< "db has opened";
 
     initMainModel(sdb);
-    initFormModel(sdb);
 
     income_category_model = new QSqlTableModel(0,sdb);
     income_category_model->setTable("income_categories");
@@ -70,15 +69,7 @@ void MainWindow::initMainModel(QSqlDatabase sdb)
     updateModelFilter();
     main_model->select();
 }
-void MainWindow::initFormModel(QSqlDatabase sdb)
-{
-    form_model = new QSqlQueryModel(/*0,sdb*/);
-//    form_model->setTable("f_categories");
-//    form_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    QSqlQuery query("select name from f_categories", sdb);
-    form_model->setQuery(query);
-    form->setModel(form_model);
-}
+
 
 void MainWindow::editTableView()
 {
@@ -160,6 +151,7 @@ void MainWindow::openForm()
 {
     ui->addDataButton->setEnabled(false);
     form->setDate(currentDate);
+    form->setModel(income_category_model);
     form->show();
 }
 void MainWindow::openCategoryForm()
