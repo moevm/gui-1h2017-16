@@ -48,9 +48,9 @@ private:
     void initModels();
     void initMainModel(QSqlDatabase sdb);
     void initFormModel(QSqlDatabase sdb);
-    QSqlTableModel* initCategoryModel(QSqlDatabase sdb,QSqlTableModel* model,QString tableName);
     void editTableView();
     void updateModelFilter();
+    void makeConnects();
 
 
 private slots:
@@ -65,6 +65,8 @@ private slots:
     void checkShowingTypes();
     void deleteData();
 
+    void addIncomeCategory(QString);
+    void addExpenseCategory(QString);
     void changeCurrentDate(QDate);
     void formClosed();
     void saveNewData(Finance);

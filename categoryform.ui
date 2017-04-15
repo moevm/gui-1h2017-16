@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>349</width>
-    <height>350</height>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <widget class="QPushButton" name="closeButton">
     <property name="geometry">
      <rect>
-      <x>250</x>
+      <x>260</x>
       <y>320</y>
       <width>75</width>
       <height>23</height>
@@ -42,14 +42,14 @@
     <widget class="QPushButton" name="addExpenseCategoryButton">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>130</x>
        <y>240</y>
-       <width>141</width>
+       <width>21</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Добавить</string>
+      <string>+</string>
      </property>
     </widget>
     <widget class="QPushButton" name="deleteExpenseCategoryButton">
@@ -72,6 +72,16 @@
        <y>20</y>
        <width>141</width>
        <height>211</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="expenseCategoryLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>240</y>
+       <width>113</width>
+       <height>20</height>
       </rect>
      </property>
     </widget>
@@ -101,14 +111,14 @@
     <widget class="QPushButton" name="addIncomeCategoryButton">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>130</x>
        <y>240</y>
-       <width>141</width>
+       <width>21</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Добавить</string>
+      <string>+</string>
      </property>
     </widget>
     <widget class="QPushButton" name="deleteIncomeCategoryButton">
@@ -122,6 +132,16 @@
      </property>
      <property name="text">
       <string>Удалить</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="incomeCategoryLineEdit">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>240</y>
+       <width>113</width>
+       <height>20</height>
+      </rect>
      </property>
     </widget>
    </widget>
