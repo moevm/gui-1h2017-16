@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,8 +24,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    dbservice.cpp \
+    finance.cpp \
+    form.cpp \
+    categoryform.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    dbservice.h \
+    finance.h \
+    form.h \
+    categoryform.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    form.ui \
+    categoryform.ui
