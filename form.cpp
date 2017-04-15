@@ -7,8 +7,10 @@ Form::Form(QWidget *parent) :
     ui(new Ui::Form)
 {
     ui->setupUi(this);
+    ui->errorLabel->setVisible(false);
 
      QObject::connect(ui->addButton,SIGNAL(clicked(bool)),this,SLOT(checkInputData()));
+     QObject::connect(ui->categoryToolButton,SIGNAL(clicked(bool)),this,SLOT(disableCategoryToolButton()));
 }
 
 Form::~Form()
@@ -19,8 +21,9 @@ Form::~Form()
 
 void Form::checkInputData()
 {
-    if(ui->sumEditField->text()==""){
+    if(ui->sumEditField->text()=="" || ui->sumEditField->text().toInt()<=0){
         qDebug()<<"error";
+        ui->errorLabel->setVisible(true);
         return;
     }
 
@@ -32,6 +35,11 @@ void Form::checkInputData()
 
     emit dataChecked(finance);
     close();
+}
+
+void Form::disableCategoryToolButton()
+{
+    emit categoryToolButtonPressed();
 }
 
 void Form::setModel(QSqlQueryModel *value)
@@ -48,6 +56,12 @@ void Form::setDate(const QDate &value)
 
 void Form::closeEvent(QCloseEvent *event)
 {
+    clearFields();
     emit closed();
     event->accept();
+}
+
+void Form::clearFields(){
+    ui->errorLabel->setVisible(false);
+    ui->sumEditField->setText("");
 }

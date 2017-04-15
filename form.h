@@ -26,13 +26,16 @@ public:
 signals:
     void closed();
     void dataChecked(Finance);
+    void categoryToolButtonPressed();
 
 private slots:
     void checkInputData();
+    void disableCategoryToolButton();
 
 private:
     Ui::Form *ui;
     void closeEvent(QCloseEvent*);
+    void clearFields();
 };
 
 #endif // FORM_H

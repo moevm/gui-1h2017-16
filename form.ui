@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>170</width>
-    <height>325</height>
+    <height>374</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>150</width>
-     <height>301</height>
+     <height>351</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -259,13 +259,48 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>290</y>
       <width>121</width>
       <height>23</height>
      </rect>
     </property>
     <property name="text">
      <string>Добавить</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="errorLabel">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>260</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>error</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>121</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Закрыть</string>
     </property>
    </widget>
   </widget>

@@ -7,11 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     form = new Form;
+    categoryForm = new CategoryForm;
 
     initParameters();
-    initModel();
+    initModels();
     editTableView();
-
 
     QObject::connect(ui->addDataButton,SIGNAL(clicked(bool)),this,SLOT(openForm()));
     QObject::connect(ui->toggleContentStackButton,SIGNAL(clicked(bool)),this,SLOT(toggleContent()));
@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QObject::connect(ui->expensesCheckBox,SIGNAL(clicked(bool)),this,SLOT(checkShowingTypes()));
 
     QObject::connect(ui->deleteButton,SIGNAL(clicked(bool)),this,SLOT(deleteData()));
+
+    QObject::connect(form,SIGNAL(categoryToolButtonPressed()),this,SLOT(openCategoryForm()));
 }
 
 MainWindow::~MainWindow()
@@ -47,7 +49,7 @@ void MainWindow::initParameters()
     filterType = BOTH;
 }
 
-void MainWindow::initModel()
+void MainWindow::initModels()
 {
     QSqlDatabase sdb = QSqlDatabase::addDatabase("QSQLITE");
 //    sdb.setDatabaseName("C:\IEdb.db3");
@@ -58,27 +60,28 @@ void MainWindow::initModel()
         qDebug()<< "db has opened";
     }
 
-    main_model = new QSqlTableModel(0,sdb);
-    main_model->setTable("f_data");
-    main_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-
-    main_model->setHeaderData(0, Qt::Horizontal, "id");
-    main_model->setHeaderData(1, Qt::Horizontal, "Type");
-    main_model->setHeaderData(2, Qt::Horizontal, "Date");
-    main_model->setHeaderData(3, Qt::Horizontal, "Category");
-    main_model->setHeaderData(4, Qt::Horizontal, "Sum");
+    initMainModel(sdb);
+    initFormModel(sdb);
 
 
-    updateModelFilter();
-    main_model->select();
+    categoryForm->setIncomeCategoriesModel(initCategoryModel(sdb,income_category_model,"income_categories"));
+    categoryForm->setExpenseCategoriesModel(initCategoryModel(sdb,expense_category_model,"expense_categories"));
 
-    form_model = new QSqlQueryModel(/*0,sdb*/);
-//    form_model->setTable("f_categories");
-//    form_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    QSqlQuery query("select name from f_categories", sdb);
-    form_model->setQuery(query);
-    form->setModel(form_model);
 
+
+
+//    income_category_model = new QSqlTableModel(0,sdb);
+//    income_category_model->setTable("income_categories");
+//    income_category_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+//    income_category_model->select();
+//    categoryForm->setIncomeCategoriesModel(income_category_model);
+
+//    expense_category_model = new QSqlTableModel(0,sdb);
+//    expense_category_model->setTable("expense_categories");
+//    expense_category_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+//    expense_category_model->select();
+
+//    categoryForm->setExpenseCategoriesModel(expense_category_model);
 
 //    QSqlQuery query;
 
@@ -94,6 +97,41 @@ void MainWindow::initModel()
 //       qDebug() << "ERROR: " << query.lastError().text();
 
     //    qDebug()<<QString( QCoreApplication::applicationDirPath() + "/logo.jpg" );
+}
+
+void MainWindow::initMainModel(QSqlDatabase sdb)
+{
+    main_model = new QSqlTableModel(0,sdb);
+    main_model->setTable("f_data");
+    main_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+    main_model->setHeaderData(0, Qt::Horizontal, "id");
+    main_model->setHeaderData(1, Qt::Horizontal, "Type");
+    main_model->setHeaderData(2, Qt::Horizontal, "Date");
+    main_model->setHeaderData(3, Qt::Horizontal, "Category");
+    main_model->setHeaderData(4, Qt::Horizontal, "Sum");
+
+    updateModelFilter();
+    main_model->select();
+}
+
+void MainWindow::initFormModel(QSqlDatabase sdb)
+{
+    form_model = new QSqlQueryModel(/*0,sdb*/);
+//    form_model->setTable("f_categories");
+//    form_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    QSqlQuery query("select name from f_categories", sdb);
+    form_model->setQuery(query);
+    form->setModel(form_model);
+}
+
+QSqlTableModel *MainWindow::initCategoryModel(QSqlDatabase sdb, QSqlTableModel* model, QString tableName)
+{
+    model = new QSqlTableModel(0,sdb);
+    model->setTable(tableName);
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
+    return model;
 }
 
 void MainWindow::editTableView()
@@ -164,6 +202,11 @@ void MainWindow::openForm()
 //    }
 
 
+}
+
+void MainWindow::openCategoryForm()
+{
+    categoryForm->show();
 }
 
 void MainWindow::toggleContent(){
@@ -294,8 +337,5 @@ void MainWindow::saveNewData(Finance finance)
     if(!query.exec(insertQueryString))
         qDebug() << "ERROR: " << query.lastError().text();
 
-
-
     main_model->select();
-
 }

@@ -8,7 +8,7 @@
 #include <QTableView>
 #include "form.h"
 #include "dbservice.h"
-#include "categorysettings.h"
+#include "categoryform.h"
 
 
 namespace Ui {
@@ -26,9 +26,14 @@ public:
 private:
     Ui::MainWindow *ui;
     Form *form;
-    CategorySettings *settingsWindow;
+
+    CategoryForm *categoryForm;
+
     QSqlTableModel *main_model;
     QSqlQueryModel *form_model;
+
+    QSqlTableModel *income_category_model;
+    QSqlTableModel *expense_category_model;
 
     QDate currentDate;
     QStringList currentCategories;
@@ -40,13 +45,17 @@ private:
     type filterType;
 
     void initParameters();
-    void initModel();
+    void initModels();
+    void initMainModel(QSqlDatabase sdb);
+    void initFormModel(QSqlDatabase sdb);
+    QSqlTableModel* initCategoryModel(QSqlDatabase sdb,QSqlTableModel* model,QString tableName);
     void editTableView();
     void updateModelFilter();
 
 
 private slots:
     void openForm();
+    void openCategoryForm();
     void toggleContent();
     void setDayInterval();
     void setMonthInterval();
