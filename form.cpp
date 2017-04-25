@@ -31,7 +31,7 @@ void Form::checkInputData()
 
     Finance finance;
     finance.setDate(ui->dateEditField->date());
-    finance.setType((ui->incomesRadioButton->isChecked()) ? "income" : "expense");
+    finance.setType((ui->incomesRadioButton->isChecked()) ? "доходы" : "расходы");
     finance.setCategory(ui->categoryComboBox->currentText());
     finance.setSum(ui->sumEditField->text().toInt());
 
@@ -65,4 +65,5 @@ void Form::closeEvent(QCloseEvent *event)
 void Form::clearFields(){
     ui->errorLabel->setVisible(false);
     ui->sumEditField->setText("");
+    ui->incomesRadioButton->setChecked(true);
 }

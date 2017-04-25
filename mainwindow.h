@@ -9,7 +9,8 @@
 #include "form.h"
 #include "dbservice.h"
 #include "categoryform.h"
-
+#include <QtCharts/QtCharts>
+QT_CHARTS_USE_NAMESPACE
 
 namespace Ui {
 class MainWindow;
@@ -40,18 +41,20 @@ private:
 
     enum interval {DAY, MONTH, YEAR};
     enum type {NONE, INCOMES, EXPENSES, BOTH};
+    enum chart {INCOME, EXPENSE, BALANCE};
 
     interval filterInterval;
     type filterType;
+    chart currentChart;
 
     void initParameters();
     void initModels();
     void initMainModel(QSqlDatabase sdb);
     void editTableView();
+
     void updateModelFilter();
     void makeConnects();
-
-
+    void closeEvent(QCloseEvent*);
 private slots:
     //interaction with other forms
     void openForm();
@@ -65,6 +68,7 @@ private slots:
     void setDayInterval();
     void setMonthInterval();
     void setYearInterval();
+    void checkChartType();
     void incrementCurrentDate();
     void decrementCurrentDate();
     void changeCurrentDate(QDate);
@@ -78,7 +82,7 @@ private slots:
     void deleteIncomeCategory(QModelIndexList);
     void deleteExpenseCategory(QModelIndexList);
 
-
+    void updateChart();
 
 };
 

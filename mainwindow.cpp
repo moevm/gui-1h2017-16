@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -18,6 +19,7 @@ MainWindow::~MainWindow()
     delete form;
     delete categoryForm;
     delete ui;
+//    QApplication::quit();
 }
 
 void MainWindow::initParameters()
@@ -25,6 +27,7 @@ void MainWindow::initParameters()
     form = new Form;
     categoryForm = new CategoryForm;
     currentDate = QDate::currentDate();
+    currentChart = INCOME;
     ui->dateEditField->setDate(currentDate);
     filterInterval = DAY;
     filterType = BOTH;
@@ -60,11 +63,11 @@ void MainWindow::initMainModel(QSqlDatabase sdb)
     main_model->setTable("f_data");
     main_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
-    main_model->setHeaderData(0, Qt::Horizontal, "id");
-    main_model->setHeaderData(1, Qt::Horizontal, "Type");
-    main_model->setHeaderData(2, Qt::Horizontal, "Date");
-    main_model->setHeaderData(3, Qt::Horizontal, "Category");
-    main_model->setHeaderData(4, Qt::Horizontal, "Sum");
+    main_model->setHeaderData(0, Qt::Horizontal, "ID");
+    main_model->setHeaderData(1, Qt::Horizontal, QObject::tr("Тип"));
+    main_model->setHeaderData(2, Qt::Horizontal, QObject::tr("Дата"));
+    main_model->setHeaderData(3, Qt::Horizontal, QObject::tr("Категория"));
+    main_model->setHeaderData(4, Qt::Horizontal, QObject::tr("Сумма"));
 
     updateModelFilter();
     main_model->select();
@@ -75,10 +78,12 @@ void MainWindow::editTableView()
 {
      ui->tableView->setModel(main_model);
      ui->tableView->verticalHeader()->hide();
-     ui->tableView->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
      ui->tableView->hideColumn(0); // don't show the ID
      ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 }
+
+
 void MainWindow::makeConnects(){
     //main window
     QObject::connect(ui->addDataButton,SIGNAL(clicked(bool)),this,SLOT(openForm()));
@@ -99,6 +104,11 @@ void MainWindow::makeConnects(){
     QObject::connect(ui->incomesCheckBox,SIGNAL(clicked(bool)),this,SLOT(checkShowingTypes()));
     QObject::connect(ui->expensesCheckBox,SIGNAL(clicked(bool)),this,SLOT(checkShowingTypes()));
 
+    //chart type group
+    QObject::connect(ui->incomeDiagramRadioButton,SIGNAL(clicked(bool)),this,SLOT(checkChartType()));
+    QObject::connect(ui->expenseDiagramRadioButton,SIGNAL(clicked(bool)),this,SLOT(checkChartType()));
+    QObject::connect(ui->balanceDiagramRadioButton,SIGNAL(clicked(bool)),this,SLOT(checkChartType()));
+
     //from form
     QObject::connect(form,SIGNAL(closed()),this,SLOT(formClosed()));
     QObject::connect(form,SIGNAL(dataChecked(Finance)),this,SLOT(saveNewData(Finance)));
@@ -111,7 +121,21 @@ void MainWindow::makeConnects(){
     QObject::connect(categoryForm,SIGNAL(addExpenseCategorySignal(QString)),this,SLOT(addExpenseCategory(QString)));
     QObject::connect(categoryForm,SIGNAL(deleteIncomeCategorySignal(QModelIndexList)),this,SLOT(deleteIncomeCategory(QModelIndexList)));
     QObject::connect(categoryForm,SIGNAL(deleteExpenseCategorySignal(QModelIndexList)),this,SLOT(deleteExpenseCategory(QModelIndexList)));
+
+//    //chart
+//    QObject::connect(ui->incomeDiagramRadioButton,SIGNAL(clicked(bool)),this,SLOT(updateChart()));
+//    QObject::connect(ui->expenseDiagramRadioButton,SIGNAL(clicked(bool)),this,SLOT(updateChart()));
+    //    QObject::connect(ui->balanceDiagramRadioButton,SIGNAL(clicked(bool)),this,SLOT(updateChart()));
 }
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    form->close();
+    categoryForm->close();
+    event->accept();
+}
+
+
 
 void MainWindow::updateModelFilter()
 {
@@ -135,17 +159,19 @@ void MainWindow::updateModelFilter()
         filterString.append("AND f_type = 'none'");
         break;
     case INCOMES:
-        filterString.append("AND f_type = 'income'");
+        filterString.append("AND f_type = 'доходы'");
         break;
     case EXPENSES:
-        filterString.append("AND f_type = 'expense'");
+        filterString.append("AND f_type = 'расходы'");
         break;
     case BOTH:
         break;
     }
 
-//    qDebug() << filterString;
+    filterString.append(" order by f_date");
+
     main_model->setFilter(filterString);
+    updateChart();
 }
 
 //open other windows
@@ -165,6 +191,17 @@ void MainWindow::toggleContent(){
     int curContentIndex = ui -> contentStack -> currentIndex();
     int curPanelIndex = ui->controlPanelStack -> currentIndex();
 
+    if(curContentIndex == 0){
+        ui->toggleContentStackButton->setText(QObject::tr("Показать таблицу"));
+        ui->addDataButton->setEnabled(false);
+        ui->deleteButton->setEnabled(false);
+    }else{
+        ui->toggleContentStackButton->setText(QObject::tr("Показать диаграмму"));
+        ui->addDataButton->setEnabled(true);
+        ui->deleteButton->setEnabled(true);
+    }
+
+    updateChart();
     ui->contentStack->setCurrentIndex((curContentIndex + 1)%2);
     ui->controlPanelStack->setCurrentIndex((curPanelIndex + 1)%2);
 }
@@ -184,6 +221,14 @@ void MainWindow::setYearInterval()
 {
     filterInterval = YEAR;
     updateModelFilter();
+}
+
+void MainWindow::checkChartType()
+{
+    if(ui->incomeDiagramRadioButton->isChecked()) currentChart = INCOME;
+    if(ui->expenseDiagramRadioButton->isChecked()) currentChart = EXPENSE;
+    if(ui->balanceDiagramRadioButton->isChecked()) currentChart = BALANCE;
+    updateChart();
 }
 void MainWindow::checkShowingTypes()
 {
@@ -250,7 +295,6 @@ void MainWindow::setIncomesComboBoxModel()
 {
     form->setModel(income_category_model);
 }
-
 void MainWindow::setExpensesComboBoxModel()
 {
     form->setModel(expense_category_model);
@@ -290,24 +334,22 @@ void MainWindow::addIncomeCategory(QString s)
 {
     QString insertQueryString = QString("INSERT OR IGNORE INTO income_categories(c_name) VALUES('%1')")
             .arg(s);
-    qDebug()<<insertQueryString;
+//    qDebug()<<insertQueryString;
     QSqlQuery query;
     if(!query.exec(insertQueryString))
         qDebug() << "ERROR: " << query.lastError().text();
     income_category_model->select();
 }
-
 void MainWindow::addExpenseCategory(QString s)
 {
     QString insertQueryString = QString("INSERT OR IGNORE INTO expense_categories(c_name) VALUES('%1')")
             .arg(s);
-    qDebug()<<insertQueryString;
+//    qDebug()<<insertQueryString;
     QSqlQuery query;
     if(!query.exec(insertQueryString))
         qDebug() << "ERROR: " << query.lastError().text();
     expense_category_model->select();
 }
-
 void MainWindow::deleteIncomeCategory(QModelIndexList indexes)
 {
     int countRow = indexes.count();
@@ -316,16 +358,64 @@ void MainWindow::deleteIncomeCategory(QModelIndexList indexes)
     income_category_model->submitAll();
     income_category_model->select();
 }
-
 void MainWindow::deleteExpenseCategory(QModelIndexList indexes)
 {
-    qDebug() << "yo yo yo";
     int countRow = indexes.count();
     for( int i = countRow; i > 0; i--)
            expense_category_model->removeRow( indexes.at(i-1).row(), QModelIndex());
     expense_category_model->submitAll();
     expense_category_model->select();
 }
+
+void MainWindow::updateChart()
+{
+
+    QString filterString;
+    switch(filterInterval){
+    case DAY:
+        filterString = QString("f_date = '%1'").arg(currentDate.toString("yyyy-MM-dd"));
+        break;
+    case MONTH:
+        filterString = QString("f_date BETWEEN '%1-01' AND '%1-31'").arg(currentDate.toString("yyyy-MM"));
+        break;
+    case YEAR:
+        filterString = QString("f_date BETWEEN '%1-01-01' AND '%1-12-31'").arg(currentDate.toString("yyyy"));
+        break;
+    default:
+        qDebug() << "error in choose interval section";
+    }
+
+    switch(currentChart){
+    case BALANCE:
+//        filterString.append("AND f_type = 'none'");
+        break;
+    case INCOME:
+        filterString.append(" AND f_type = 'доходы'");
+        break;
+    case EXPENSE:
+        filterString.append(" AND f_type = 'расходы'");
+        break;
+
+    }
+
+    QString queryString = QString("SELECT f_category, SUM(f_sum) FROM f_data where " + filterString + " group by f_category");
+    QSqlQuery query;
+    if(!query.exec(queryString)) qDebug() << "ERROR: " << query.lastError().text();
+
+
+    QPieSeries *series = new QPieSeries();
+
+    while (query.next()) {
+        series->append(query.value(0).toString(),(double)query.value(1).toInt());
+    }
+
+    QChart *chart = new QChart();
+    chart->addSeries(series);
+    ui->chartView->setChart(chart);
+    ui->chartView->setRenderHint(QPainter::Antialiasing);
+}
+
+
 
 void MainWindow::deleteData()
 {
