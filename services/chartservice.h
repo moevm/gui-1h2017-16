@@ -9,11 +9,15 @@ class ChartService
 {
 public:
     ChartService();
-    QChart* updateChart(QSqlQuery query, UtilEnums::ChartType chartType);
+    QChart* updateChart(QSqlQuery query, UtilEnums::ChartType chartType, UtilEnums::Interval interval, QDate currentDate);
 private:
     QChart* getIncomePieChart(QSqlQuery query);
     QChart* getExpensePieChart(QSqlQuery query);
-    QChart* getBalanceBarChart(QSqlQuery query);
+    QChart* getBalanceBarChart(QSqlQuery query, UtilEnums::Interval interval, QDate date);
+
+    void countBarSetsByYear(QSqlQuery query, QBarSet *income, QBarSet *expense);
+    void countBarSetsByMonth(QSqlQuery query, QBarSet *income, QBarSet *expense, int max_day);
+    QChart* setUpBarChart(QBarSet *income, QBarSet *expense, QStringList categories);
 };
 
 #endif // CHARTSERVICE_H

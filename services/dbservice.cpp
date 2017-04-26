@@ -131,7 +131,7 @@ void DBService::deleteMainModelData(QModelIndexList indexes)
     main_model->select();
 }
 
-QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, QDate currentDate)
+QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, UtilEnums::ChartType chartType, QDate currentDate)
 {
         QString filterString;
         switch(interval){
@@ -148,31 +148,21 @@ QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, QDate currentDa
             qDebug() << "error in choose interval section";
         }
 
-//        switch(currentChart){
-//        case BALANCE:
-//    //        filterString.append("AND f_type = 'none'");
-//            break;
-//        case INCOME:
-//            filterString.append(" AND f_type = 'доходы'");
-//            break;
-//        case EXPENSE:
-//            filterString.append(" AND f_type = 'расходы'");
-//            break;
+        QString queryString;
+        switch(chartType){
+        case UtilEnums::BALANCE:
+            queryString = QString("SELECT f_type, f_date, SUM(f_sum) FROM f_data where " + filterString + " group by f_type, f_date order by f_date");
+            break;
+        case UtilEnums::INCOME:
+        case UtilEnums::EXPENSE:
+            queryString = QString("SELECT f_type, f_category, SUM(f_sum) FROM f_data where " + filterString + " group by f_type, f_category");
+            break;
+        }
 
-//        }
-
-        QString queryString = QString("SELECT f_type, f_category, SUM(f_sum) FROM f_data where " + filterString + " group by f_category");
         QSqlQuery query;
         if(!query.exec(queryString)) qDebug() << "ERROR: " << query.lastError().text();
 
         return query;
-
-//        QPieSeries *series = new QPieSeries();
-
-//        while (query.next()) {
-//            series->append(query.value(0).toString(),(double)query.value(1).toInt());
-//        }
-
 
 }
 

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>742</width>
+    <width>1051</width>
     <height>522</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>721</width>
+      <width>1031</width>
       <height>502</height>
      </rect>
     </property>
@@ -236,7 +236,7 @@
            </widget>
            <widget class="QRadioButton" name="balanceDiagramRadioButton">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="geometry">
              <rect>
@@ -367,7 +367,7 @@
       <widget class="QStackedWidget" name="contentStack">
        <property name="minimumSize">
         <size>
-         <width>500</width>
+         <width>800</width>
          <height>500</height>
         </size>
        </property>
@@ -378,9 +378,9 @@
         <widget class="QTableView" name="tableView">
          <property name="geometry">
           <rect>
-           <x>5</x>
-           <y>11</y>
-           <width>491</width>
+           <x>0</x>
+           <y>10</y>
+           <width>791</width>
            <height>481</height>
           </rect>
          </property>
@@ -392,7 +392,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>501</width>
+           <width>801</width>
            <height>501</height>
           </rect>
          </property>

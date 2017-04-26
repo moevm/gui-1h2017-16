@@ -43,9 +43,6 @@ void MainWindow::initModels()
 
 }
 
-
-
-
 void MainWindow::editTableView()
 {
      ui->tableView->setModel(dbservice->getMainModel());
@@ -262,57 +259,11 @@ void MainWindow::deleteExpenseCategory(QModelIndexList indexes)
 void MainWindow::updateChart()
 {
 
-    QSqlQuery query = dbservice->getChartQuery(filterInterval,currentDate);
-
-    QChart *chart = chartService->updateChart(query, currentChart);
+    QSqlQuery query = dbservice->getChartQuery(filterInterval,currentChart,currentDate);
+    QChart *chart = chartService->updateChart(query, currentChart, filterInterval, currentDate);
     ui->chartView->setChart(chart);
     ui->chartView->setRenderHint(QPainter::Antialiasing);
-//    QString filterString;
-//    switch(filterInterval){
-//    case DAY:
-//        filterString = QString("f_date = '%1'").arg(currentDate.toString("yyyy-MM-dd"));
-//        break;
-//    case MONTH:
-//        filterString = QString("f_date BETWEEN '%1-01' AND '%1-31'").arg(currentDate.toString("yyyy-MM"));
-//        break;
-//    case YEAR:
-//        filterString = QString("f_date BETWEEN '%1-01-01' AND '%1-12-31'").arg(currentDate.toString("yyyy"));
-//        break;
-//    default:
-//        qDebug() << "error in choose interval section";
-//    }
-
-//    switch(currentChart){
-//    case BALANCE:
-////        filterString.append("AND f_type = 'none'");
-//        break;
-//    case INCOME:
-//        filterString.append(" AND f_type = 'доходы'");
-//        break;
-//    case EXPENSE:
-//        filterString.append(" AND f_type = 'расходы'");
-//        break;
-
-//    }
-
-//    QString queryString = QString("SELECT f_category, SUM(f_sum) FROM f_data where " + filterString + " group by f_category");
-//    QSqlQuery query;
-//    if(!query.exec(queryString)) qDebug() << "ERROR: " << query.lastError().text();
-
-
-//    QPieSeries *series = new QPieSeries();
-
-//    while (query.next()) {
-//        series->append(query.value(0).toString(),(double)query.value(1).toInt());
-//    }
-
-//    QChart *chart = new QChart();
-//    chart->addSeries(series);
-//    ui->chartView->setChart(chart);
-//    ui->chartView->setRenderHint(QPainter::Antialiasing);
 }
-
-
 
 void MainWindow::deleteData()
 {

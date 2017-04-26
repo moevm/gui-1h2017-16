@@ -28,7 +28,7 @@ public:
     void updateMainModelFilter(UtilEnums::Interval interval, UtilEnums::Type type,QDate currentDate);
     void deleteMainModelData(QModelIndexList indexes);
 
-    QSqlQuery getChartQuery(UtilEnums::Interval interval, QDate currentDate);
+    QSqlQuery getChartQuery(UtilEnums::Interval interval, UtilEnums::ChartType chartType, QDate currentDate);
 
 private:
     QSqlDatabase sdb;
