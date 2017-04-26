@@ -7,8 +7,10 @@
 #include <QSqlTableModel>
 #include <QTableView>
 #include "form.h"
-#include "dbservice.h"
+#include "../services/dbservice.h"
+#include "../services/chartservice.h"
 #include "categoryform.h"
+#include "../util/utilenums.h"
 #include <QtCharts/QtCharts>
 QT_CHARTS_USE_NAMESPACE
 
@@ -27,25 +29,17 @@ public:
 private:
     Ui::MainWindow *ui;
     Form *form;
-
     CategoryForm *categoryForm;
 
-    QSqlTableModel *main_model;
-    QSqlQueryModel *form_model;
-
-    QSqlTableModel *income_category_model;
-    QSqlTableModel *expense_category_model;
+    DBService *dbservice;
+    ChartService *chartService;
 
     QDate currentDate;
     QStringList currentCategories;
 
-    enum interval {DAY, MONTH, YEAR};
-    enum type {NONE, INCOMES, EXPENSES, BOTH};
-    enum chart {INCOME, EXPENSE, BALANCE};
-
-    interval filterInterval;
-    type filterType;
-    chart currentChart;
+    UtilEnums::Interval filterInterval;
+    UtilEnums::Type filterType;
+    UtilEnums::ChartType currentChart;
 
     void initParameters();
     void initModels();

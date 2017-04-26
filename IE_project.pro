@@ -24,17 +24,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
-    dbservice.cpp \
-    finance.cpp \
-    form.cpp \
-    categoryform.cpp
+    model/finance.cpp \
+    services/chartservice.cpp \
+    services/dbservice.cpp \
+    util/utilenums.cpp \
+    windows/categoryform.cpp \
+    windows/form.cpp \
+    windows/mainwindow.cpp
 
-HEADERS  += mainwindow.h \
-    dbservice.h \
-    finance.h \
-    form.h \
-    categoryform.h
+HEADERS  += model/finance.h \
+    services/chartservice.h \
+    services/dbservice.h \
+    util/utilenums.h \
+    windows/categoryform.h \
+    windows/form.h \
+    windows/mainwindow.h
 
 FORMS    += mainwindow.ui \
     form.ui \
