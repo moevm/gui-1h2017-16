@@ -28,13 +28,21 @@ public:
     void updateMainModelFilter(UtilEnums::Interval interval, UtilEnums::Type type,QDate currentDate);
     void deleteMainModelData(QModelIndexList indexes);
 
+    void definePossibleCategories();
+
     QSqlQuery getChartQuery(UtilEnums::Interval interval, UtilEnums::ChartType chartType, QDate currentDate);
+
+    QSet<QString> getPossibleIncomeCategories() const;
+    QSet<QString> getPossibleExpenseCategories() const;
 
 private:
     QSqlDatabase sdb;
     QSqlTableModel *main_model;
     QSqlTableModel *income_category_model;
     QSqlTableModel *expense_category_model;
+
+    QSet<QString> possibleIncomeCategories;
+    QSet<QString> possibleExpenseCategories;
 
     void initDB();
     void createTables();

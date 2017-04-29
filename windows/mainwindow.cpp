@@ -63,6 +63,9 @@ void MainWindow::makeConnects(){
     QObject::connect(ui->dateEditField,SIGNAL(dateChanged(QDate)),this,SLOT(changeCurrentDate(QDate)));
     QObject::connect(ui->nextDateButton,SIGNAL(clicked(bool)),this,SLOT(incrementCurrentDate()));
     QObject::connect(ui->previousDateButton,SIGNAL(clicked(bool)),this,SLOT(decrementCurrentDate()));
+    QObject::connect(ui->incomeCategoryListWidget,SIGNAL(itemChanged(QListWidgetItem*)),this,SLOT(updateFromIncomeCategoryListWidget(QListWidgetItem*)));
+    QObject::connect(ui->expenseCategoryListWidget,SIGNAL(itemChanged(QListWidgetItem*)),this,SLOT(updateFromExpenseCategoryListWidget(QListWidgetItem*)));
+
 
     //interval group
     QObject::connect(ui->dayRadioButton,SIGNAL(clicked(bool)),this,SLOT(setDayInterval()));
@@ -105,7 +108,72 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::updateModelFilter()
 {
     dbservice->updateMainModelFilter(filterInterval,filterType,currentDate);
+    updateCategoryListWidgets();
     updateChart();
+}
+
+void MainWindow::updateCategoryListWidgets()
+{
+    fillCategoryListWidget( ui->incomeCategoryListWidget, dbservice->getPossibleIncomeCategories());
+    fillCategoryListWidget( ui->expenseCategoryListWidget, dbservice->getPossibleExpenseCategories());
+}
+
+void MainWindow::fillCategoryListWidget(QListWidget *widget, QSet<QString> set)
+{
+    widget->clear();
+    foreach (const QString &value, set){
+        QListWidgetItem *item = new QListWidgetItem;
+        item->setData( Qt::DisplayRole, value );
+        item->setData( Qt::CheckStateRole, Qt::Checked );
+        widget->addItem( item );
+    }
+}
+
+void MainWindow::updateTableView(QListWidgetItem *item, QString type)
+{
+    QString category = item->text();
+
+    if(item->checkState()== Qt::Checked){
+
+        qDebug()<<QString("checked: %1").arg(category);
+        QSqlTableModel * model = dbservice->getMainModel();
+        int rowCount = model ->rowCount();
+
+        QVector<int> rowsToShow;
+
+        for(int i = 0; i<rowCount;i++){
+            if(model->index(i,1).data().toString() == type && model->index(i,3).data().toString() == category){
+                qDebug()<<i;
+                rowsToShow.append(i);
+            }
+        }
+
+        for(int i=0;i<rowsToShow.size();i++){
+            ui->tableView->showRow(rowsToShow.at(i));
+        }
+    }
+
+    if(item->checkState() == Qt::Unchecked){
+        qDebug()<<QString("unchecked: %1").arg(category);
+
+        QSqlTableModel * model = dbservice->getMainModel();
+        int rowCount = model ->rowCount();
+
+        QVector<int> rowsToHide;
+
+        for(int i = 0; i<rowCount;i++){
+
+            if(model->index(i,1).data().toString() == type && model->index(i,3).data().toString() == category){
+                qDebug()<<i;
+                rowsToHide.append(i);
+            }
+        }
+
+        for(int i=rowsToHide.size()-1;i>=0;i--){
+            ui->tableView->hideRow(rowsToHide.at(i));
+        }
+
+    }
 }
 
 //open other windows
@@ -162,10 +230,6 @@ void MainWindow::checkChartType()
     if(ui->incomeDiagramRadioButton->isChecked()) currentChart = UtilEnums::INCOME;
     if(ui->expenseDiagramRadioButton->isChecked()) currentChart = UtilEnums::EXPENSE;
     if(ui->balanceDiagramRadioButton->isChecked()) {
-//        if(filterInterval==UtilEnums::DAY){
-//            ui->dayRadioButton->setEnabled(false);
-//            ui->monthRadioButton->setChecked(true);
-//        }
         currentChart = UtilEnums::BALANCE;
     }
     updateChart();
@@ -179,6 +243,16 @@ void MainWindow::checkShowingTypes()
     if (!income && expense) filterType = UtilEnums::EXPENSES;
     if (!income && !expense) filterType = UtilEnums::NONE;
     updateModelFilter();
+}
+
+void MainWindow::updateFromIncomeCategoryListWidget(QListWidgetItem* item)
+{
+    updateTableView(item, "доходы");
+}
+
+void MainWindow::updateFromExpenseCategoryListWidget(QListWidgetItem* item)
+{
+    updateTableView(item, "расходы");
 }
 void MainWindow::changeCurrentDate(QDate date)
 {

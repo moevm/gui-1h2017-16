@@ -118,6 +118,7 @@ void DBService::updateMainModelFilter(UtilEnums::Interval interval, UtilEnums::T
     filterString.append(" order by f_date");
 
     main_model->setFilter(filterString);
+    definePossibleCategories();
 }
 
 void DBService::deleteMainModelData(QModelIndexList indexes)
@@ -129,6 +130,20 @@ void DBService::deleteMainModelData(QModelIndexList indexes)
            main_model->removeRow( indexes.at(i-1).row(), QModelIndex());
     main_model->submitAll();
     main_model->select();
+}
+
+void DBService::definePossibleCategories()
+{
+    possibleIncomeCategories.clear();
+    possibleExpenseCategories.clear();
+
+    for(int i=0; i < main_model->rowCount();i++){
+        if(main_model->index(i,1).data().toString() == "доходы"){
+            possibleIncomeCategories.insert(main_model->index(i,3).data().toString());
+        }else{
+            possibleExpenseCategories.insert(main_model->index(i,3).data().toString());
+        }
+    }
 }
 
 QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, UtilEnums::ChartType chartType, QDate currentDate)
@@ -164,6 +179,16 @@ QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, UtilEnums::Char
 
         return query;
 
+}
+
+QSet<QString> DBService::getPossibleIncomeCategories() const
+{
+    return possibleIncomeCategories;
+}
+
+QSet<QString> DBService::getPossibleExpenseCategories() const
+{
+    return possibleExpenseCategories;
 }
 
 void DBService::deleteIncomeModelData(QModelIndexList indexes)

@@ -47,6 +47,9 @@ private:
     void editTableView();
 
     void updateModelFilter();
+    void updateCategoryListWidgets();
+    void fillCategoryListWidget(QListWidget* widget,QSet<QString> set);
+    void updateTableView(QListWidgetItem* item,QString type);
     void makeConnects();
     void closeEvent(QCloseEvent*);
 private slots:
@@ -67,6 +70,8 @@ private slots:
     void decrementCurrentDate();
     void changeCurrentDate(QDate);
     void checkShowingTypes();
+    void updateFromIncomeCategoryListWidget(QListWidgetItem*);
+    void updateFromExpenseCategoryListWidget(QListWidgetItem*);
 
     //crud
     void saveNewData(Finance);
