@@ -26,7 +26,7 @@ QChart *ChartService::getIncomePieChart(QSqlQuery query)
 
     while (query.next()) {
         if(query.value(0).toString()=="доходы"){
-            series->append(query.value(1).toString(),(double)query.value(2).toInt());
+            series->append(QString("%1 (%2 р.)").arg(query.value(1).toString()).arg(query.value(2).toString()),(double)query.value(2).toInt());
         }
     }
 
@@ -41,7 +41,7 @@ QChart *ChartService::getExpensePieChart(QSqlQuery query)
 
     while (query.next()) {
         if(query.value(0).toString()=="расходы"){
-            series->append(query.value(1).toString(),(double)query.value(2).toInt());
+            series->append(QString("%1 (%2 р.)").arg(query.value(1).toString()).arg(query.value(2).toString()),(double)query.value(2).toInt());
         }
     }
 
@@ -63,6 +63,7 @@ QChart *ChartService::getBalanceBarChart(QSqlQuery query, UtilEnums::Interval in
 
     switch(interval){
     case UtilEnums::DAY:
+        countBarSetsByDay(query,income,expense);
         break;
     case UtilEnums::MONTH:{
         int max_day = date.daysInMonth();
@@ -80,10 +81,18 @@ QChart *ChartService::getBalanceBarChart(QSqlQuery query, UtilEnums::Interval in
 
         break;
     }
-for(int i=0;i<categories.size();i++){
-    qDebug()<<categories.at(i);
+//for(int i=0;i<categories.size();i++){
+//    qDebug()<<categories.at(i);
+//}
+return setUpBarChart(income,expense,categories);
 }
-    return setUpBarChart(income,expense,categories);
+
+void ChartService::countBarSetsByDay(QSqlQuery query, QBarSet *income, QBarSet *expense)
+{
+    while(query.next()){
+        if(query.value(0).toString()=="доходы") income->append(query.value(2).toInt());
+        else expense->append(query.value(2).toInt());
+    }
 }
 
 void ChartService::countBarSetsByYear(QSqlQuery query, QBarSet *income, QBarSet *expense){
@@ -165,9 +174,16 @@ void ChartService::countBarSetsByMonth(QSqlQuery query, QBarSet *income, QBarSet
 
 QChart *ChartService::setUpBarChart(QBarSet *income, QBarSet *expense, QStringList categories)
 {
+
+    QBarSet *balance = new QBarSet("Balance");
+    for(int i = 0;i<income->count();i++){
+        balance->append(income->at(i) - expense->at(i));
+    }
+
     QBarSeries *series = new QBarSeries();
     series->append(income);
     series->append(expense);
+//    series->append(balance);
 
     QChart *chart = new QChart();
     chart->addSeries(series);

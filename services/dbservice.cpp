@@ -190,7 +190,7 @@ void DBService::initDB()
     //    sdb.setDatabaseName("C:\IEdb.db3");
     sdb.setDatabaseName("D:\IEdb.db3");
     if(!sdb.open()) qDebug()<<"doesn't work";
-    else qDebug()<< "db has opened";
+//    else qDebug()<< "db has opened";
 }
 
 void DBService::createTables()

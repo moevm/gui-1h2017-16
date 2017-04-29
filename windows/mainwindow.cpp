@@ -161,7 +161,13 @@ void MainWindow::checkChartType()
 {
     if(ui->incomeDiagramRadioButton->isChecked()) currentChart = UtilEnums::INCOME;
     if(ui->expenseDiagramRadioButton->isChecked()) currentChart = UtilEnums::EXPENSE;
-    if(ui->balanceDiagramRadioButton->isChecked()) currentChart = UtilEnums::BALANCE;
+    if(ui->balanceDiagramRadioButton->isChecked()) {
+//        if(filterInterval==UtilEnums::DAY){
+//            ui->dayRadioButton->setEnabled(false);
+//            ui->monthRadioButton->setChecked(true);
+//        }
+        currentChart = UtilEnums::BALANCE;
+    }
     updateChart();
 }
 void MainWindow::checkShowingTypes()

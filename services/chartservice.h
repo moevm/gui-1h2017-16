@@ -15,6 +15,7 @@ private:
     QChart* getExpensePieChart(QSqlQuery query);
     QChart* getBalanceBarChart(QSqlQuery query, UtilEnums::Interval interval, QDate date);
 
+    void countBarSetsByDay(QSqlQuery query,QBarSet *income, QBarSet *expense);
     void countBarSetsByYear(QSqlQuery query, QBarSet *income, QBarSet *expense);
     void countBarSetsByMonth(QSqlQuery query, QBarSet *income, QBarSet *expense, int max_day);
     QChart* setUpBarChart(QBarSet *income, QBarSet *expense, QStringList categories);
