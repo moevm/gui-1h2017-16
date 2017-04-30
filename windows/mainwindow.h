@@ -41,10 +41,14 @@ private:
     UtilEnums::Type filterType;
     UtilEnums::ChartType currentChart;
 
+    QSet<QString> uncheckedIncomeCategories;
+    QSet<QString> uncheckedExpenseCategories;
+
     void initParameters();
     void initModels();
     void initMainModel(QSqlDatabase sdb);
     void editTableView();
+    void initCategoryCheckBoxesView();
 
     void updateModelFilter();
     void updateCategoryListWidgets();

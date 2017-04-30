@@ -146,7 +146,7 @@ void DBService::definePossibleCategories()
     }
 }
 
-QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, UtilEnums::ChartType chartType, QDate currentDate)
+QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, UtilEnums::ChartType chartType, QDate currentDate/*, QSet<QString> uncheckedIncomeCategories,QSet<QString> uncheckedExpenseCategories*/)
 {
         QString filterString;
         switch(interval){
@@ -163,6 +163,24 @@ QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, UtilEnums::Char
             qDebug() << "error in choose interval section";
         }
 
+//        filterString.append("and ((f_type == 'доходы'");
+//        if(uncheckedIncomeCategories.size()>0){
+//            foreach (const QString &value, uncheckedIncomeCategories){
+//                filterString.append(QString(" and f_category <> '%1'").arg(value));
+//            }
+//        }
+//        filterString.append(")");
+
+//        filterString.append("or (f_type == 'расходы'");
+//        if(uncheckedExpenseCategories.size()>0){
+//            foreach (const QString &value, uncheckedExpenseCategories){
+//                filterString.append(QString(" and f_category <> '%1'").arg(value));
+//            }
+//        }
+//        filterString.append("))");
+
+
+
         QString queryString;
         switch(chartType){
         case UtilEnums::BALANCE:
@@ -173,6 +191,8 @@ QSqlQuery DBService::getChartQuery(UtilEnums::Interval interval, UtilEnums::Char
             queryString = QString("SELECT f_type, f_category, SUM(f_sum) FROM f_data where " + filterString + " group by f_type, f_category");
             break;
         }
+
+         qDebug()<<"query string in get Chart "<<queryString;
 
         QSqlQuery query;
         if(!query.exec(queryString)) qDebug() << "ERROR: " << query.lastError().text();

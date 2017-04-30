@@ -37,6 +37,7 @@ void MainWindow::initParameters()
 void MainWindow::initModels()
 {
     dbservice->init();
+    initCategoryCheckBoxesView();
     updateModelFilter();
     categoryForm->setIncomeCategoriesModel(dbservice->getIncomeCategoryModel());
     categoryForm->setExpenseCategoriesModel(dbservice->getExpenseCategoryModel());
@@ -50,6 +51,29 @@ void MainWindow::editTableView()
      ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
      ui->tableView->hideColumn(0); // don't show the ID
      ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+}
+
+void MainWindow::initCategoryCheckBoxesView()
+{
+   QSqlTableModel* model = dbservice->getIncomeCategoryModel();
+   int rowCount = model ->rowCount();
+
+   for(int i = 0; i<rowCount;i++){
+       QListWidgetItem *item = new QListWidgetItem;
+       item->setData(Qt::DisplayRole, model->index(i,1).data().toString());
+       item->setData(Qt::CheckStateRole, Qt::Checked );
+       ui->incomeCategoryListWidget->addItem( item );
+   }
+
+   model = dbservice->getExpenseCategoryModel();
+   rowCount = model ->rowCount();
+
+   for(int i = 0; i<rowCount;i++){
+       QListWidgetItem *item = new QListWidgetItem;
+       item->setData(Qt::DisplayRole, model->index(i,1).data().toString());
+       item->setData(Qt::CheckStateRole, Qt::Checked );
+       ui->expenseCategoryListWidget->addItem( item );
+   }
 }
 
 
@@ -107,9 +131,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::updateModelFilter()
 {
+    qDebug()<<"in update model filter";
     dbservice->updateMainModelFilter(filterInterval,filterType,currentDate);
     updateCategoryListWidgets();
-    updateChart();
+//    updateChart();
 }
 
 void MainWindow::updateCategoryListWidgets()
@@ -120,12 +145,16 @@ void MainWindow::updateCategoryListWidgets()
 
 void MainWindow::fillCategoryListWidget(QListWidget *widget, QSet<QString> set)
 {
-    widget->clear();
-    foreach (const QString &value, set){
-        QListWidgetItem *item = new QListWidgetItem;
-        item->setData( Qt::DisplayRole, value );
-        item->setData( Qt::CheckStateRole, Qt::Checked );
-        widget->addItem( item );
+    for (int i=0;i<widget->count();i++){
+        QListWidgetItem *item = widget->item(i);
+        if(set.contains(item->text())){
+            qDebug()<<"show "<<item->text();
+            widget->item(i)->setHidden(false);
+            emit widget->itemChanged(item);
+        }else{
+            qDebug()<<"hide "<<item->text();
+            widget->item(i)->setHidden(true);
+        }
     }
 }
 
@@ -278,7 +307,6 @@ void MainWindow::incrementCurrentDate()
     }
 
     ui->dateEditField->setDate(currentDate);
-    updateModelFilter();
 }
 void MainWindow::decrementCurrentDate()
 {
@@ -297,7 +325,6 @@ void MainWindow::decrementCurrentDate()
     }
 
     ui->dateEditField->setDate(currentDate);
-    updateModelFilter();
 }
 
 void MainWindow::formClosed()
@@ -318,14 +345,38 @@ void MainWindow::setExpensesComboBoxModel()
 void MainWindow::saveNewData(Finance finance)
 {
     dbservice->addFinanceData(finance);
+    QListWidget* widget;
+    if(finance.getType()=="доходы"){
+        widget = ui->incomeCategoryListWidget;
+    }else{
+        widget = ui->expenseCategoryListWidget;
+    }
+
+    for (int i=0;i<widget->count();i++){
+        if(widget->item(i)->text() == finance.getCategory()){
+            widget->item(i)->setHidden(false);
+            break;
+        }
+    }
+
 }
 void MainWindow::addIncomeCategory(QString s)
 {
     dbservice->addIncomeCategory(s);
+    QListWidgetItem *item = new QListWidgetItem;
+    item->setData(Qt::DisplayRole, s);
+    item->setData(Qt::CheckStateRole, Qt::Checked );
+    ui->incomeCategoryListWidget->addItem( item );
+    item->setHidden(true);
 }
 void MainWindow::addExpenseCategory(QString s)
 {
     dbservice->addExpenseCategory(s);
+    QListWidgetItem *item = new QListWidgetItem;
+    item->setData(Qt::DisplayRole, s);
+    item->setData(Qt::CheckStateRole, Qt::Checked );
+    ui->expenseCategoryListWidget->addItem( item );
+     item->setHidden(true);
 }
 void MainWindow::deleteIncomeCategory(QModelIndexList indexes)
 {
@@ -348,4 +399,41 @@ void MainWindow::updateChart()
 void MainWindow::deleteData()
 {
     dbservice->deleteMainModelData(ui->tableView->selectionModel()->selectedRows());
+
+    QSqlTableModel * model = dbservice->getMainModel();
+    int rowCount = model ->rowCount();
+
+    QSet<QString> existingIncomeCategories;
+    QSet<QString> existingExpenseCategories;
+
+    for(int i = 0; i<rowCount;i++){
+        if(model->index(i,1).data().toString() == "доходы"){
+            qDebug()<<"added " <<model->index(i,3).data().toString()<<" to existing incomes";
+            existingIncomeCategories.insert(model->index(i,3).data().toString());
+        }
+        else{
+            qDebug()<<"added " <<model->index(i,3).data().toString()<<" to existing expenses";
+            existingExpenseCategories.insert(model->index(i,3).data().toString());
+        }
+    }
+
+    QListWidget* widget;
+
+    widget=ui->incomeCategoryListWidget;
+
+    for (int i=0;i<widget->count();i++){
+        if(!existingIncomeCategories.contains(widget->item(i)->text())){
+            qDebug()<<"need to hide " << widget->item(i)->text();
+            widget->item(i)->setHidden(true);
+        }
+    }
+
+    widget=ui->expenseCategoryListWidget;
+
+    for (int i=0;i<widget->count();i++){
+        if(!existingExpenseCategories.contains(widget->item(i)->text())){
+            widget->item(i)->setHidden(true);
+        }
+    }
+
 }

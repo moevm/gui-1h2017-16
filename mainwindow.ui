@@ -402,16 +402,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QListWidget" name="incomeCategoryListWidget">
-    <property name="geometry">
-     <rect>
-      <x>1040</x>
-      <y>40</y>
-      <width>131</width>
-      <height>191</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QListWidget" name="expenseCategoryListWidget">
     <property name="geometry">
      <rect>
@@ -446,6 +436,16 @@
     </property>
     <property name="text">
      <string>Категории расходов</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="incomeCategoryListWidget">
+    <property name="geometry">
+     <rect>
+      <x>1040</x>
+      <y>40</y>
+      <width>131</width>
+      <height>201</height>
+     </rect>
     </property>
    </widget>
   </widget>
