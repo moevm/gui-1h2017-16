@@ -23,8 +23,8 @@ Form::~Form()
 
 void Form::checkInputData()
 {
-    if(ui->sumEditField->text()=="" || ui->sumEditField->text().toInt()<=0){
-        qDebug()<<"error";
+    if(ui->sumEditField->text()=="" || ui->sumEditField->text().toInt()<=0 ||
+            ui->categoryComboBox->currentData().toString()==""){
         ui->errorLabel->setVisible(true);
         return;
     }
