@@ -134,7 +134,7 @@ void MainWindow::updateModelFilter()
     qDebug()<<"in update model filter";
     dbservice->updateMainModelFilter(filterInterval,filterType,currentDate);
     updateCategoryListWidgets();
-//    updateChart();
+    updateChart();
 }
 
 void MainWindow::updateCategoryListWidgets()
@@ -226,10 +226,14 @@ void MainWindow::toggleContent(){
         ui->toggleContentStackButton->setText(QObject::tr("Показать таблицу"));
         ui->addDataButton->setEnabled(false);
         ui->deleteButton->setEnabled(false);
+        ui->incomeCategoryListWidget->setEnabled(false);
+        ui->expenseCategoryListWidget->setEnabled(false);
     }else{
         ui->toggleContentStackButton->setText(QObject::tr("Показать диаграмму"));
         ui->addDataButton->setEnabled(true);
         ui->deleteButton->setEnabled(true);
+        ui->incomeCategoryListWidget->setEnabled(true);
+        ui->expenseCategoryListWidget->setEnabled(true);
     }
 
     updateChart();

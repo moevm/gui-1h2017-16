@@ -233,14 +233,32 @@ void DBService::initDB()
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
     //    sdb.setDatabaseName("C:\IEdb.db3");
-    sdb.setDatabaseName("D:\IEdb.db3");
+    sdb.setDatabaseName("D:\IEdb2.db3");
     if(!sdb.open()) qDebug()<<"doesn't work";
 //    else qDebug()<< "db has opened";
 }
 
 void DBService::createTables()
 {
-    //create if not exist
+    QSqlQuery query;
+    if(!query.exec("CREATE TABLE IF NOT EXISTS `f_data` "
+                   "(`f_id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+                   "`f_type` TEXT NOT NULL, `f_date` DATE NOT NULL,"
+                   "`f_category` TEXT NOT NULL, "
+                   "`f_sum` INTEGER NOT NULL)"))
+        qDebug() << "ERROR: " << query.lastError().text();
+
+    if(!query.exec("CREATE TABLE IF NOT EXISTS `income_categories` "
+                   "( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
+                   "`c_name` TEXT NOT NULL )"))
+        qDebug() << "ERROR: " << query.lastError().text();
+
+    if(!query.exec("CREATE TABLE IF NOT EXISTS `expense_categories` "
+                   "( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
+                   "`c_name` TEXT NOT NULL )"))
+        qDebug() << "ERROR: " << query.lastError().text();
+
+
 }
 
 void DBService::initModels()
