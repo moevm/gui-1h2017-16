@@ -276,8 +276,8 @@
      <rect>
       <x>10</x>
       <y>260</y>
-      <width>47</width>
-      <height>13</height>
+      <width>131</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="font">
@@ -287,7 +287,7 @@
      </font>
     </property>
     <property name="text">
-     <string>error</string>
+     <string>Заполните все поля</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">

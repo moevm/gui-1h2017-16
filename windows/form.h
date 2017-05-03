@@ -5,7 +5,7 @@
 #include <QCloseEvent>
 #include <QDebug>
 #include <QSqlTableModel>
-#include "finance.h"
+#include "../model/finance.h"
 
 namespace Ui {
 class Form;

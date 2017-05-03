@@ -1,27 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-
-    <width>742</width>
+    <width>1174</width>
     <height>522</height>
-
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>721</width>
+      <width>1031</width>
       <height>502</height>
      </rect>
     </property>
@@ -219,6 +217,9 @@
             <property name="text">
              <string>Доходы</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
            <widget class="QRadioButton" name="expenseDiagramRadioButton">
             <property name="geometry">
@@ -234,6 +235,9 @@
             </property>
            </widget>
            <widget class="QRadioButton" name="balanceDiagramRadioButton">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
             <property name="geometry">
              <rect>
               <x>20</x>
@@ -292,7 +296,7 @@
              </rect>
             </property>
             <property name="text">
-             <string>доходы</string>
+             <string>Доходы</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -308,7 +312,7 @@
              </rect>
             </property>
             <property name="text">
-             <string>расходы</string>
+             <string>Расходы</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -327,7 +331,7 @@
           </size>
          </property>
          <property name="text">
-          <string>добавить данные</string>
+          <string>Добавить данные</string>
          </property>
         </widget>
        </item>
@@ -340,7 +344,7 @@
           </size>
          </property>
          <property name="text">
-          <string>удалить выделенное</string>
+          <string>Удалить выделенное</string>
          </property>
         </widget>
        </item>
@@ -353,7 +357,7 @@
           </size>
          </property>
          <property name="text">
-          <string>показать диаграмму</string>
+          <string>Показать диаграмму</string>
          </property>
         </widget>
        </item>
@@ -363,7 +367,7 @@
       <widget class="QStackedWidget" name="contentStack">
        <property name="minimumSize">
         <size>
-         <width>500</width>
+         <width>800</width>
          <height>500</height>
         </size>
        </property>
@@ -374,26 +378,23 @@
         <widget class="QTableView" name="tableView">
          <property name="geometry">
           <rect>
-           <x>5</x>
-           <y>11</y>
-           <width>500</width>
-           <height>490</height>
+           <x>0</x>
+           <y>10</y>
+           <width>791</width>
+           <height>481</height>
           </rect>
          </property>
         </widget>
        </widget>
        <widget class="QWidget" name="page_diagram">
-        <widget class="QLabel" name="label">
+        <widget class="QChartView" name="chartView" native="true">
          <property name="geometry">
           <rect>
-           <x>180</x>
-           <y>140</y>
-           <width>47</width>
-           <height>13</height>
+           <x>0</x>
+           <y>0</y>
+           <width>801</width>
+           <height>501</height>
           </rect>
-         </property>
-         <property name="text">
-          <string>diagram</string>
          </property>
         </widget>
        </widget>
@@ -401,11 +402,79 @@
      </item>
     </layout>
    </widget>
+   <widget class="QStackedWidget" name="rightPanelStack">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>10</y>
+      <width>151</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="page">
+     <widget class="QListWidget" name="incomeCategoryListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>20</y>
+        <width>141</width>
+        <height>211</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Категории доходов</string>
+      </property>
+     </widget>
+     <widget class="QListWidget" name="expenseCategoryListWidget">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>260</y>
+        <width>141</width>
+        <height>221</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>240</y>
+        <width>121</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Категории расходов</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_2"/>
+   </widget>
   </widget>
-
  </widget>
- <layoutDefault spacing="6" margin="11" />
- <pixmapfunction></pixmapfunction>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QChartView</class>
+   <extends>QWidget</extends>
+   <header>qchartview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

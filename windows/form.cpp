@@ -23,15 +23,17 @@ Form::~Form()
 
 void Form::checkInputData()
 {
-    if(ui->sumEditField->text()=="" || ui->sumEditField->text().toInt()<=0){
-        qDebug()<<"error";
+    qDebug()<<"hellelo";
+    if(ui->sumEditField->text()=="" || ui->sumEditField->text().toInt()<=0 ||
+            ui->categoryComboBox->currentText()==""){
+        qDebug()<<"tset"<< ui->categoryComboBox->currentText();
         ui->errorLabel->setVisible(true);
         return;
     }
 
     Finance finance;
     finance.setDate(ui->dateEditField->date());
-    finance.setType((ui->incomesRadioButton->isChecked()) ? "income" : "expense");
+    finance.setType((ui->incomesRadioButton->isChecked()) ? "доходы" : "расходы");
     finance.setCategory(ui->categoryComboBox->currentText());
     finance.setSum(ui->sumEditField->text().toInt());
 
@@ -65,4 +67,5 @@ void Form::closeEvent(QCloseEvent *event)
 void Form::clearFields(){
     ui->errorLabel->setVisible(false);
     ui->sumEditField->setText("");
+    ui->incomesRadioButton->setChecked(true);
 }
