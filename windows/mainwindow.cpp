@@ -221,6 +221,7 @@ void MainWindow::openCategoryForm()
 void MainWindow::toggleContent(){
     int curContentIndex = ui -> contentStack -> currentIndex();
     int curPanelIndex = ui->controlPanelStack -> currentIndex();
+    int curRightPanelIndex = ui->rightPanelStack -> currentIndex();
 
     if(curContentIndex == 0){
         ui->toggleContentStackButton->setText(QObject::tr("Показать таблицу"));
@@ -239,6 +240,7 @@ void MainWindow::toggleContent(){
     updateChart();
     ui->contentStack->setCurrentIndex((curContentIndex + 1)%2);
     ui->controlPanelStack->setCurrentIndex((curPanelIndex + 1)%2);
+    ui->rightPanelStack->setCurrentIndex((curRightPanelIndex + 1)%2);
 }
 
 //filters
