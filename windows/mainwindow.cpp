@@ -384,7 +384,19 @@ void MainWindow::addExpenseCategory(QString s)
 }
 void MainWindow::deleteIncomeCategory(QModelIndexList indexes)
 {
-    dbservice->deleteIncomeModelData(indexes);
+    QSet<QString> categoryNamesToDelete = dbservice->deleteIncomeModelData(indexes);
+    QListWidget* widget = ui->incomeCategoryListWidget;
+    QVector<int> itemsToDelete;
+    for (int i=0;i<widget->count();i++){
+        if(categoryNamesToDelete.contains(widget->item(i)->text())){
+            itemsToDelete.append(i);
+        }
+    }
+
+    for(int i=itemsToDelete.size()-1;i>=0;i--){
+        widget->takeItem(itemsToDelete.at(i));
+    }
+
 }
 void MainWindow::deleteExpenseCategory(QModelIndexList indexes)
 {

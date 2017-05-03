@@ -22,7 +22,7 @@ public:
     void addFinanceData(Finance finance);
     void addIncomeCategory(QString s);
     void addExpenseCategory(QString s);
-    void deleteIncomeModelData(QModelIndexList indexes);
+    QSet<QString> deleteIncomeModelData(QModelIndexList indexes);
     void deleteExpenseModelData(QModelIndexList indexes);
 
     void updateMainModelFilter(UtilEnums::Interval interval, UtilEnums::Type type,QDate currentDate);

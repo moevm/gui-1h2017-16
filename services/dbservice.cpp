@@ -211,13 +211,27 @@ QSet<QString> DBService::getPossibleExpenseCategories() const
     return possibleExpenseCategories;
 }
 
-void DBService::deleteIncomeModelData(QModelIndexList indexes)
+QSet<QString> DBService::deleteIncomeModelData(QModelIndexList indexes)
 {
+    QSet<QString> categoryNames;
     int countRow = indexes.count();
-    for( int i = countRow; i > 0; i--)
-           income_category_model->removeRow( indexes.at(i-1).row(), QModelIndex());
+    for( int i = countRow; i > 0; i--){
+       categoryNames.insert(income_category_model->itemData(indexes.at(i-1)).value(0).toString());
+       income_category_model->removeRow( indexes.at(i-1).row(), QModelIndex());
+    }
     income_category_model->submitAll();
     income_category_model->select();
+
+    QSqlQuery query;
+    for (int i=0; i<categoryNames.size();i++){
+        if(!query.exec(QString("delete from `f_data` where f_type = 'доходы' and f_category = '%1'")
+                       .arg(categoryNames.values().at(i))))
+            qDebug() << "ERROR: " << query.lastError().text();
+    }
+
+    main_model->select();
+
+    return categoryNames;
 }
 
 void DBService::deleteExpenseModelData(QModelIndexList indexes)
@@ -232,10 +246,8 @@ void DBService::deleteExpenseModelData(QModelIndexList indexes)
 void DBService::initDB()
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
-    //    sdb.setDatabaseName("C:\IEdb.db3");
-    sdb.setDatabaseName("D:\IEdb2.db3");
+    sdb.setDatabaseName("D:\IEdb.db3");
     if(!sdb.open()) qDebug()<<"doesn't work";
-//    else qDebug()<< "db has opened";
 }
 
 void DBService::createTables()

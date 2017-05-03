@@ -145,6 +145,20 @@
      </property>
     </widget>
    </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>310</y>
+      <width>251</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>При удалении категории также удаляются
+относящиеся к ней записи</string>
+    </property>
+   </widget>
   </widget>
  </widget>
  <resources/>
