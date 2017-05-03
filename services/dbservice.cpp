@@ -234,13 +234,27 @@ QSet<QString> DBService::deleteIncomeModelData(QModelIndexList indexes)
     return categoryNames;
 }
 
-void DBService::deleteExpenseModelData(QModelIndexList indexes)
+QSet<QString> DBService::deleteExpenseModelData(QModelIndexList indexes)
 {
+    QSet<QString> categoryNames;
     int countRow = indexes.count();
-    for( int i = countRow; i > 0; i--)
-           expense_category_model->removeRow( indexes.at(i-1).row(), QModelIndex());
+    for( int i = countRow; i > 0; i--){
+        categoryNames.insert(income_category_model->itemData(indexes.at(i-1)).value(0).toString());
+        expense_category_model->removeRow( indexes.at(i-1).row(), QModelIndex());
+    }
     expense_category_model->submitAll();
     expense_category_model->select();
+
+    QSqlQuery query;
+    for (int i=0; i<categoryNames.size();i++){
+        if(!query.exec(QString("delete from `f_data` where f_type = 'расходы' and f_category = '%1'")
+                       .arg(categoryNames.values().at(i))))
+            qDebug() << "ERROR: " << query.lastError().text();
+    }
+
+    main_model->select();
+
+    return categoryNames;
 }
 
 void DBService::initDB()
