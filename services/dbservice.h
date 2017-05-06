@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QDir>
+#include <QCoreApplication>
 #include "../model/finance.h"
 #include "../util/utilenums.h"
 

@@ -1,5 +1,6 @@
 #include "dbservice.h"
 
+
 DBService::DBService()
 {
 
@@ -260,7 +261,7 @@ QSet<QString> DBService::deleteExpenseModelData(QModelIndexList indexes)
 void DBService::initDB()
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
-    sdb.setDatabaseName("D:\IEdb.db3");
+    sdb.setDatabaseName(QString(QCoreApplication::applicationDirPath() +  QDir::toNativeSeparators(QDir::separator()) + "IEdb.db3"));
     if(!sdb.open()) qDebug()<<"doesn't work";
 }
 
@@ -274,14 +275,17 @@ void DBService::createTables()
                    "`f_sum` INTEGER NOT NULL)"))
         qDebug() << "ERROR: " << query.lastError().text();
 
+    if(!query.exec("CREATE UNIQUE INDEX `f_data_index` ON `f_data` (`f_type` ,`f_date` ,`f_category` )"))
+        qDebug() << "ERROR: " << query.lastError().text();
+
     if(!query.exec("CREATE TABLE IF NOT EXISTS `income_categories` "
                    "( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-                   "`c_name` TEXT NOT NULL )"))
+                   "`c_name` TEXT NOT NULL UNIQUE)"))
         qDebug() << "ERROR: " << query.lastError().text();
 
     if(!query.exec("CREATE TABLE IF NOT EXISTS `expense_categories` "
                    "( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, "
-                   "`c_name` TEXT NOT NULL )"))
+                   "`c_name` TEXT NOT NULL UNIQUE)"))
         qDebug() << "ERROR: " << query.lastError().text();
 
 
