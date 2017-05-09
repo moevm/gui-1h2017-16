@@ -261,7 +261,10 @@ QSet<QString> DBService::deleteExpenseModelData(QModelIndexList indexes)
 void DBService::initDB()
 {
     sdb = QSqlDatabase::addDatabase("QSQLITE");
-    sdb.setDatabaseName(QString(QCoreApplication::applicationDirPath() +  QDir::toNativeSeparators(QDir::separator()) + "IEdb.db3"));
+    QString s =QString(QCoreApplication::applicationDirPath() +  QDir::toNativeSeparators(QDir::separator()) + ".."
+                       + QDir::toNativeSeparators(QDir::separator())  + "IEdb.db3");
+    sdb.setDatabaseName(s);
+    qDebug()<< s;
     if(!sdb.open()) qDebug()<<"doesn't work";
 }
 

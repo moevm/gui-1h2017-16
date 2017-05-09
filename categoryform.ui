@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>349</width>
+    <width>350</width>
     <height>351</height>
    </rect>
   </property>
@@ -23,6 +23,11 @@
       <height>23</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>Закрыть</string>
     </property>
@@ -35,6 +40,11 @@
       <width>161</width>
       <height>301</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
     </property>
     <property name="title">
      <string>Категории расходов</string>
@@ -95,6 +105,11 @@
       <height>301</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>Категории доходов</string>
     </property>
@@ -150,9 +165,14 @@
      <rect>
       <x>10</x>
       <y>310</y>
-      <width>251</width>
+      <width>241</width>
       <height>41</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>9</pointsize>
+     </font>
     </property>
     <property name="text">
      <string>При удалении категории также удаляются

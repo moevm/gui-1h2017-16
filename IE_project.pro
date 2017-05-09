@@ -9,6 +9,9 @@ QT       += core gui sql charts
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = IE_project
+target.path=/usr/bin
+INSTALLS += target
+
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use

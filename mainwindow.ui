@@ -40,6 +40,11 @@
            <height>80</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="title">
           <string>Дата</string>
          </property>
@@ -107,7 +112,7 @@
          <property name="minimumSize">
           <size>
            <width>150</width>
-           <height>80</height>
+           <height>100</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -116,6 +121,11 @@
            <height>80</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="title">
           <string>Период</string>
          </property>
@@ -123,7 +133,7 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>20</y>
+            <y>30</y>
             <width>82</width>
             <height>17</height>
            </rect>
@@ -139,7 +149,7 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>40</y>
+            <y>50</y>
             <width>82</width>
             <height>17</height>
            </rect>
@@ -152,7 +162,7 @@
           <property name="geometry">
            <rect>
             <x>20</x>
-            <y>60</y>
+            <y>70</y>
             <width>82</width>
             <height>17</height>
            </rect>
@@ -181,7 +191,7 @@
              <x>0</x>
              <y>10</y>
              <width>200</width>
-             <height>80</height>
+             <height>100</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -193,7 +203,7 @@
            <property name="minimumSize">
             <size>
              <width>200</width>
-             <height>80</height>
+             <height>100</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -202,6 +212,11 @@
              <height>80</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="title">
             <string>Тип диаграммы</string>
            </property>
@@ -209,7 +224,7 @@
             <property name="geometry">
              <rect>
               <x>20</x>
-              <y>20</y>
+              <y>30</y>
               <width>82</width>
               <height>17</height>
              </rect>
@@ -225,7 +240,7 @@
             <property name="geometry">
              <rect>
               <x>20</x>
-              <y>40</y>
+              <y>50</y>
               <width>82</width>
               <height>17</height>
              </rect>
@@ -241,7 +256,7 @@
             <property name="geometry">
              <rect>
               <x>20</x>
-              <y>60</y>
+              <y>70</y>
               <width>82</width>
               <height>17</height>
              </rect>
@@ -259,7 +274,7 @@
              <x>0</x>
              <y>10</y>
              <width>200</width>
-             <height>80</height>
+             <height>100</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -271,7 +286,7 @@
            <property name="minimumSize">
             <size>
              <width>150</width>
-             <height>80</height>
+             <height>100</height>
             </size>
            </property>
            <property name="maximumSize">
@@ -279,6 +294,11 @@
              <width>200</width>
              <height>80</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
            </property>
            <property name="title">
             <string>Показывать</string>
@@ -290,8 +310,8 @@
             <property name="geometry">
              <rect>
               <x>20</x>
-              <y>20</y>
-              <width>70</width>
+              <y>30</y>
+              <width>81</width>
               <height>17</height>
              </rect>
             </property>
@@ -306,8 +326,8 @@
             <property name="geometry">
              <rect>
               <x>20</x>
-              <y>50</y>
-              <width>70</width>
+              <y>60</y>
+              <width>101</width>
               <height>17</height>
              </rect>
             </property>
@@ -330,6 +350,11 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Добавить данные</string>
          </property>
@@ -343,6 +368,11 @@
            <height>16777215</height>
           </size>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Удалить выделенное</string>
          </property>
@@ -355,6 +385,11 @@
            <width>200</width>
            <height>16777215</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>Показать диаграмму</string>
@@ -424,15 +459,25 @@
         <height>211</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </widget>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>121</width>
+        <width>151</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Категории доходов</string>
@@ -447,15 +492,25 @@
         <height>221</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
      </widget>
      <widget class="QLabel" name="label_2">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>240</y>
-        <width>121</width>
+        <width>151</width>
         <height>16</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Категории расходов</string>
